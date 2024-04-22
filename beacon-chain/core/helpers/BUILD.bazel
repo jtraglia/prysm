@@ -12,6 +12,7 @@ go_library(
         "rewards_penalties.go",
         "shuffle.go",
         "sync_committee.go",
+        "validator_churn.go",
         "validators.go",
         "weak_subjectivity.go",
     ],

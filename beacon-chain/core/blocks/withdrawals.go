@@ -429,39 +429,41 @@ func ProcessExecutionLayerWithdrawalRequest(ctx context.Context,
 		if err != nil {
 			return nil, errors.Wrap(err, fmt.Sprintf("could not get balance at index %d", index))
 		}
+		// safe add the uint64 to avoid overflow
+		balanceAdjustment, err := math.Add64(params.BeaconConfig().MinActivationBalance, pendingBalanceToWithdraw)
+		if err != nil {
+			return nil, errors.Wrap(err, "unable to add adjustment balance of MIN_ACTIVATION_BALANCE and pendingBalanceToWithdraw")
+		}
 		hasExcessBalance := func() bool {
-			// TODO: consider if we need a safe add function for overflow
-			return balanceAtIndex > params.BeaconConfig().MinActivationBalance+pendingBalanceToWithdraw
+			return balanceAtIndex > balanceAdjustment
 		}()
 
 		//# Only allow partial withdrawals with compounding withdrawal credentials
 		if helpers.HasCompoundingWithdrawalCredential(validator) && hasSufficientEffectiveBalance && hasExcessBalance {
-			balanceSubMin, err := math.Sub64(balanceAtIndex, params.BeaconConfig().MinActivationBalance)
-			if err != nil {
-				return nil, err
-			}
-			balanceAfterAdjustments, err := math.Sub64(balanceSubMin, pendingBalanceToWithdraw)
-			if err != nil {
-				return nil, err
-			}
 			//to_withdraw = min(
 			//	state.balances[index] - MIN_ACTIVATION_BALANCE - pending_balance_to_withdraw,
 			//	amount
 			//)
-			toWithdraw := math.Min(balanceAfterAdjustments, amount)
-			exitQueueEpoch :=
-				beaconState.AppendPendingPartialWithdrawal()
+
+			// note: you can safely subtract these values because haxExcessBalance is checked
+			toWithdraw := math.Min(balanceAtIndex-params.BeaconConfig().MinActivationBalance-pendingBalanceToWithdraw, amount)
+			exitQueueEpoch, err := beaconState.ExitEpochAndUpdateChurn(toWithdraw)
+			if err != nil {
+				return nil, errors.Wrap(err, fmt.Sprintf("could not get exit queue epoch for validator index %d", index))
+			}
+			withdrawableEpoch, err := exitQueueEpoch.SafeAddEpoch(params.BeaconConfig().MinValidatorWithdrawabilityDelay)
+			if err != nil {
+				return nil, err
+			}
+			if err := beaconState.AppendPendingPartialWithdrawal(&ethpb.PartialWithdrawal{
+				Index:             index,
+				Amount:            toWithdraw,
+				WithdrawableEpoch: uint64(withdrawableEpoch),
+			}); err != nil {
+				return nil, err
+			}
 		}
-
-		//exit_queue_epoch = compute_exit_epoch_and_update_churn(state, to_withdraw)
-		//withdrawable_epoch = Epoch(exit_queue_epoch + MIN_VALIDATOR_WITHDRAWABILITY_DELAY)
-		//state.pending_partial_withdrawals.append(PendingPartialWithdrawal(
-		//	index=index,
-		//	amount=to_withdraw,
-		//	withdrawable_epoch=withdrawable_epoch,
-		//))
 	}
-
 	return beaconState, nil
 }
 

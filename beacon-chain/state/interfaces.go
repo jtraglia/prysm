@@ -74,6 +74,7 @@ type ReadOnlyBeaconState interface {
 	LatestExecutionPayloadHeader() (interfaces.ExecutionData, error)
 	PendingBalanceToWithdraw(idx primitives.ValidatorIndex) (uint64, error)
 	PendingPartialWithdrawals() ([]*ethpb.PartialWithdrawal, error)
+	ExitEpochAndUpdateChurn(exitBalance uint64) (primitives.Epoch, error)
 }
 
 // WriteOnlyBeaconState defines a struct which only has write access to beacon state methods.

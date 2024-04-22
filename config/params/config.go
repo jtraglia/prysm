@@ -50,6 +50,7 @@ type BeaconChainConfig struct {
 	BLSWithdrawalPrefixByte         byte     `yaml:"BLS_WITHDRAWAL_PREFIX" spec:"true"`          // BLSWithdrawalPrefixByte is used for BLS withdrawal and it's the first byte.
 	ETH1AddressWithdrawalPrefixByte byte     `yaml:"ETH1_ADDRESS_WITHDRAWAL_PREFIX" spec:"true"` // ETH1AddressWithdrawalPrefixByte is used for withdrawals and it's the first byte.
 	ZeroHash                        [32]byte // ZeroHash is used to represent a zeroed out 32 byte array.
+	CompoundingWithdrawalPrefix     byte     `yaml:"COMPOUNDING_WITHDRAWAL_PREFIX" spec:"true"` // prefix used for maxeb eip 7521
 
 	// Time parameters constants.
 	GenesisDelay                     uint64           `yaml:"GENESIS_DELAY" spec:"true"`                   // GenesisDelay is the minimum number of seconds to delay starting the Ethereum Beacon Chain genesis. Must be at least 1 second.
@@ -84,10 +85,11 @@ type BeaconChainConfig struct {
 	EpochsPerRandomSubnetSubscription uint64 `yaml:"EPOCHS_PER_RANDOM_SUBNET_SUBSCRIPTION" spec:"true"` // EpochsPerRandomSubnetSubscription specifies the minimum duration a validator is connected to their subnet.
 
 	// State list lengths
-	EpochsPerHistoricalVector primitives.Epoch `yaml:"EPOCHS_PER_HISTORICAL_VECTOR" spec:"true"` // EpochsPerHistoricalVector defines max length in epoch to store old historical stats in beacon state.
-	EpochsPerSlashingsVector  primitives.Epoch `yaml:"EPOCHS_PER_SLASHINGS_VECTOR" spec:"true"`  // EpochsPerSlashingsVector defines max length in epoch to store old stats to recompute slashing witness.
-	HistoricalRootsLimit      uint64           `yaml:"HISTORICAL_ROOTS_LIMIT" spec:"true"`       // HistoricalRootsLimit defines max historical roots that can be saved in state before roll over.
-	ValidatorRegistryLimit    uint64           `yaml:"VALIDATOR_REGISTRY_LIMIT" spec:"true"`     // ValidatorRegistryLimit defines the upper bound of validators can participate in eth2.
+	EpochsPerHistoricalVector      primitives.Epoch `yaml:"EPOCHS_PER_HISTORICAL_VECTOR" spec:"true"`      // EpochsPerHistoricalVector defines max length in epoch to store old historical stats in beacon state.
+	EpochsPerSlashingsVector       primitives.Epoch `yaml:"EPOCHS_PER_SLASHINGS_VECTOR" spec:"true"`       // EpochsPerSlashingsVector defines max length in epoch to store old stats to recompute slashing witness.
+	HistoricalRootsLimit           uint64           `yaml:"HISTORICAL_ROOTS_LIMIT" spec:"true"`            // HistoricalRootsLimit defines max historical roots that can be saved in state before roll over.
+	ValidatorRegistryLimit         uint64           `yaml:"VALIDATOR_REGISTRY_LIMIT" spec:"true"`          // ValidatorRegistryLimit defines the upper bound of validators can participate in eth2.
+	PendingPartialWithdrawalsLimit uint64           `yaml:"PENDING_PARTIAL_WITHDRAWALS_LIMIT" spec:"true"` // PendingPartialWithdrawalsLimit defines the upper bound of pending partial withdrawals on a beacon state.
 
 	// Reward and penalty quotients constants.
 	BaseRewardFactor               uint64 `yaml:"BASE_REWARD_FACTOR" spec:"true"`               // BaseRewardFactor is used to calculate validator per-slot interest rate.

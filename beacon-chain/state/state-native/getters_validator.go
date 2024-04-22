@@ -409,3 +409,52 @@ func (b *BeaconState) inactivityScoresVal() []uint64 {
 	copy(res, b.inactivityScores)
 	return res
 }
+
+// PendingBalanceToWithdraw returns the sum of all pending withdrawals for the given validator.
+//
+// Spec definition:
+//
+//	def get_pending_balance_to_withdraw(state: BeaconState, validator_index: ValidatorIndex) -> Gwei:
+//	    return sum(
+//	        withdrawal.amount for withdrawal in state.pending_partial_withdrawals if withdrawal.index == validator_index)
+func (b *BeaconState) PendingBalanceToWithdraw(idx primitives.ValidatorIndex) (uint64, error) {
+	if b.version < version.Electra {
+		return 0, errNotSupported("PendingBalanceToWithdraw", b.version)
+	}
+
+	b.lock.RLock()
+	defer b.lock.RUnlock()
+
+	// TODO: Consider maintaining this value in the state, if it's a potential bottleneck.
+	// This is n*m complexity, but this method can only be called
+	// MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD per slot. A more optimized storage indexing such as a
+	// lookup map could be used to reduce the complexity marginally.
+	var sum uint64
+	for _, w := range b.pendingPartialWithdrawals {
+		if w.Index == idx {
+			sum += w.Amount
+		}
+	}
+	return sum, nil
+}
+
+// TODO: consider if this way of implementing getter is correct
+func (b *BeaconState) PendingPartialWithdrawals() ([]*ethpb.PartialWithdrawal, error) {
+	if b.version < version.Electra {
+		return nil, errNotSupported("PendingPartialWithdrawals", b.version)
+	}
+
+	b.lock.RLock()
+	defer b.lock.RUnlock()
+
+	return b.pendingPartialWithdrawalsVal(), nil
+}
+
+func (b *BeaconState) pendingPartialWithdrawalsVal() []*ethpb.PartialWithdrawal {
+	if b.pendingPartialWithdrawals == nil {
+		return nil
+	}
+	res := make([]*ethpb.PartialWithdrawal, len(b.pendingPartialWithdrawals))
+	copy(res, b.pendingPartialWithdrawals)
+	return res
+}

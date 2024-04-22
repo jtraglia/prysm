@@ -2,6 +2,7 @@ package state_native
 
 import (
 	"github.com/pkg/errors"
+	"github.com/prysmaticlabs/prysm/v5/beacon-chain/core/helpers"
 	"github.com/prysmaticlabs/prysm/v5/config/params"
 	"github.com/prysmaticlabs/prysm/v5/consensus-types/primitives"
 	"github.com/prysmaticlabs/prysm/v5/encoding/bytesutil"
@@ -123,4 +124,63 @@ func isPartiallyWithdrawableValidator(val *ethpb.Validator, balance uint64) bool
 	hasMaxBalance := val.EffectiveBalance == params.BeaconConfig().MaxEffectiveBalance
 	hasExcessBalance := balance > params.BeaconConfig().MaxEffectiveBalance
 	return hasETH1WithdrawalCredential(val) && hasExcessBalance && hasMaxBalance
+}
+
+// TODO: This goes in exits file?
+// ExitEpochAndUpdateChurn
+//
+// Spec definition:
+//
+//	def compute_exit_epoch_and_update_churn(state: BeaconState, exit_balance: Gwei) -> Epoch:
+//	    earliest_exit_epoch = compute_activation_exit_epoch(get_current_epoch(state))
+//	    per_epoch_churn = get_activation_exit_churn_limit(state)
+//	    # New epoch for exits.
+//	    if state.earliest_exit_epoch < earliest_exit_epoch:
+//	        state.earliest_exit_epoch = earliest_exit_epoch
+//	        state.exit_balance_to_consume = per_epoch_churn
+//
+//	    if exit_balance <= state.exit_balance_to_consume:
+//	        # Exit fits in the current earliest epoch.
+//	        state.exit_balance_to_consume -= exit_balance
+//	    else:
+//	        # Exit doesn't fit in the current earliest epoch.
+//	        balance_to_process = exit_balance - state.exit_balance_to_consume
+//	        additional_epochs, remainder = divmod(balance_to_process, per_epoch_churn)
+//	        state.earliest_exit_epoch += additional_epochs + 1
+//	        state.exit_balance_to_consume = per_epoch_churn - remainder
+//
+// return state.earliest_exit_epoch
+func (b *BeaconState) ExitEpochAndUpdateChurn(exitBalance uint64) (primitives.Epoch, error) {
+	if b.version < version.Electra {
+		return 0, errNotSupported("ExitEpochAndUpdateChurn", b.version)
+	}
+
+	b.lock.Lock()
+	defer b.lock.Unlock()
+
+	earliestExitEpoch := helpers.ActivationExitEpoch(slots.ToEpoch(b.slot))
+	activeBal, err := helpers.TotalActiveBalance(b)
+	if err != nil {
+		return 0, err
+	}
+	// Guaranteed to be non-zero.
+	perEpochChurn := helpers.ActivationExitChurnLimit(helpers.ActivationExitChurnLimit(activeBal))
+
+	// New epoch for exits
+	if b.earliestExitEpoch < earliestExitEpoch {
+		b.earliestExitEpoch = earliestExitEpoch
+		b.exitBalanceToConsume = perEpochChurn
+	}
+
+	if exitBalance <= b.exitBalanceToConsume {
+		b.exitBalanceToConsume -= exitBalance
+	} else {
+		// exit doesn't fit in the current earliest epoch
+		balanceToProcess := exitBalance - b.exitBalanceToConsume
+		additionalEpochs, remainder := balanceToProcess/perEpochChurn, balanceToProcess%perEpochChurn
+		b.earliestExitEpoch += primitives.Epoch(additionalEpochs + 1)
+		b.exitBalanceToConsume = perEpochChurn - remainder
+	}
+
+	return b.earliestExitEpoch, nil
 }

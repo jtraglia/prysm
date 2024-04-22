@@ -393,6 +393,9 @@ message BeaconStateElectra {
   uint64 next_withdrawal_index = 11001;
   uint64 next_withdrawal_validator_index = 11002 [(ethereum.eth.ext.cast_type) = "github.com/prysmaticlabs/prysm/v5/consensus-types/primitives.ValidatorIndex"];
   repeated HistoricalSummary historical_summaries = 11003 [(ethereum.eth.ext.ssz_max) = "16777216"];
+
+  // Fields Introduced in Electra [12001-13000]
+  repeated PartialWithdrawal pending_partial_withdrawals = 12007 [(ethereum.eth.ext.ssz_max) = "134217728"];
 }
 
 // PowBlock is a definition from Bellatrix fork choice spec to represent a block with total difficulty in the PoW chain.
@@ -411,4 +414,15 @@ message PowBlock {
 message HistoricalSummary {
   bytes block_summary_root = 1 [(ethereum.eth.ext.ssz_size) = "32"];
   bytes state_summary_root = 2 [(ethereum.eth.ext.ssz_size) = "32"];
+}
+
+message PartialWithdrawal {
+  // Validator index for the withdrawal.
+  uint64 index = 1 [(ethereum.eth.ext.cast_type) = "github.com/prysmaticlabs/prysm/v5/consensus-types/primitives.ValidatorIndex"];
+
+  // The amount of the withdrawal (gwei).
+  uint64 amount = 2;
+
+  // TODO: document this field
+  uint64 withdrawable_epoch = 3;
 }

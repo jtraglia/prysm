@@ -92,6 +92,7 @@ var mainnetBeaconConfig = &BeaconChainConfig{
 	BLSWithdrawalPrefixByte:         byte(0),
 	ETH1AddressWithdrawalPrefixByte: byte(1),
 	ZeroHash:                        [32]byte{},
+	CompoundingWithdrawalPrefix:     byte(2),
 
 	// Time parameter constants.
 	MinAttestationInclusionDelay:     1,
@@ -132,10 +133,11 @@ var mainnetBeaconConfig = &BeaconChainConfig{
 	SecondsPerETH1Block: 14,
 
 	// State list length constants.
-	EpochsPerHistoricalVector: 65536,
-	EpochsPerSlashingsVector:  8192,
-	HistoricalRootsLimit:      16777216,
-	ValidatorRegistryLimit:    1099511627776,
+	EpochsPerHistoricalVector:      65536,
+	EpochsPerSlashingsVector:       8192,
+	HistoricalRootsLimit:           16777216,
+	ValidatorRegistryLimit:         1099511627776,
+	PendingPartialWithdrawalsLimit: 134217728, // new in electra
 
 	// Reward and penalty quotients constants.
 	BaseRewardFactor:               64,

@@ -202,6 +202,7 @@ func (b *BeaconState) ToProtoUnsafe() interface{} {
 			NextWithdrawalIndex:          b.nextWithdrawalIndex,
 			NextWithdrawalValidatorIndex: b.nextWithdrawalValidatorIndex,
 			HistoricalSummaries:          b.historicalSummaries,
+			PendingPartialWithdrawals:    b.pendingPartialWithdrawals,
 		}
 	default:
 		return nil

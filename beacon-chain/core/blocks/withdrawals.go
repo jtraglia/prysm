@@ -18,6 +18,7 @@ import (
 	"github.com/prysmaticlabs/prysm/v5/crypto/hash"
 	"github.com/prysmaticlabs/prysm/v5/encoding/bytesutil"
 	"github.com/prysmaticlabs/prysm/v5/encoding/ssz"
+	"github.com/prysmaticlabs/prysm/v5/math"
 	ethpb "github.com/prysmaticlabs/prysm/v5/proto/prysm/v1alpha1"
 	"github.com/prysmaticlabs/prysm/v5/runtime/version"
 	"github.com/prysmaticlabs/prysm/v5/time/slots"
@@ -350,16 +351,24 @@ func ProcessExecutionLayerWithdrawalRequest(ctx context.Context,
 		return beaconState, nil
 	}
 
+	maxExitEpoch, churn := v.MaxExitEpochAndChurn(beaconState)
 	for idx, withdrawalRequest := range withdrawlRequests {
 		if withdrawalRequest == nil {
 			return nil, errors.New("nil execution layer withdrawal request in payload")
 		}
+		amount := withdrawalRequest.Amount
 		isFullExitRequest := func() bool {
 			return withdrawalRequest.Amount == fieldparams.FullExitRequestAmount
 		}()
+
 		//# If partial withdrawal queue is full, only full exits are processed
-		//if len(state.pending_partial_withdrawals) == PENDING_PARTIAL_WITHDRAWALS_LIMIT and not is_full_exit_request:
-		//return
+		pendingPartialWithdrawals, err := beaconState.PendingPartialWithdrawals()
+		if err != nil {
+			return nil, err
+		}
+		if uint64(len(pendingPartialWithdrawals)) == params.BeaconConfig().PendingPartialWithdrawalsLimit && !isFullExitRequest {
+			continue
+		}
 
 		index, ok := beaconState.ValidatorIndexByPubkey(bytesutil.ToBytes48(withdrawalRequest.ValidatorPubkey))
 		if !ok {
@@ -369,15 +378,12 @@ func ProcessExecutionLayerWithdrawalRequest(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		withdrawalCredentials := validator.WithdrawalCredentials()
-
 		// # Verify withdrawal credentials
-		//    has_correct_credential = has_execution_withdrawal_credential(validator)
-		//    is_correct_source_address = (
-		//        validator.withdrawal_credentials[12:] == execution_layer_withdrawal_request.source_address
-		//    )
-		//if not (has_correct_credential and is_correct_source_address):
-		//return
+		hasCorrectCredential := helpers.HasETH1WithdrawalCredential(validator)
+		isCorrectSourceAddress := bytes.Equal(validator.WithdrawalCredentials()[12:], withdrawalRequest.SourceAddress)
+		if !(hasCorrectCredential && isCorrectSourceAddress) {
+			return nil, errors.New("could not find correct withdrawal credential with source address")
+		}
 
 		currentSlot := beaconState.Slot()
 		currentEpoch := slots.ToEpoch(currentSlot)
@@ -401,14 +407,20 @@ func ProcessExecutionLayerWithdrawalRequest(ctx context.Context,
 			)
 		}
 
-		pendingBalanceToWithdraw := 0 //get_pending_balance_to_withdraw(state, index)
+		pendingBalanceToWithdraw, err := beaconState.PendingBalanceToWithdraw(index)
+		if err != nil {
+			return nil, err
+		}
 
 		if isFullExitRequest {
 			//# Only exit validator if it has no pending withdrawals in the queue
-			//if pending_balance_to_withdraw == 0:
-			//if pending_balance_to_withdraw == 0:
-			//initiate_validator_exit(state, index)
-			//return
+			if pendingBalanceToWithdraw == 0 {
+				beaconState, _, err = v.InitiateValidatorExit(ctx, beaconState, index, maxExitEpoch, churn)
+				if err != nil {
+					return nil, errors.Wrap(err, fmt.Sprintf("could not initiate validator exit for validator index %d", index))
+				}
+			}
+			continue
 		}
 		hasSufficientEffectiveBalance := func() bool {
 			return validator.EffectiveBalance() >= params.BeaconConfig().MinActivationBalance
@@ -418,15 +430,29 @@ func ProcessExecutionLayerWithdrawalRequest(ctx context.Context,
 			return nil, errors.Wrap(err, fmt.Sprintf("could not get balance at index %d", index))
 		}
 		hasExcessBalance := func() bool {
-			return balanceAtIndex > params.BeaconConfig().MinActivationBalance+pendingBalanceToWithdraw // safe addition to not overflow
+			// TODO: consider if we need a safe add function for overflow
+			return balanceAtIndex > params.BeaconConfig().MinActivationBalance+pendingBalanceToWithdraw
 		}()
 
 		//# Only allow partial withdrawals with compounding withdrawal credentials
-		//if has_compounding_withdrawal_credential(validator) and has_sufficient_effective_balance and has_excess_balance:
-		//to_withdraw = min(
-		//	state.balances[index] - MIN_ACTIVATION_BALANCE - pending_balance_to_withdraw,
-		//	amount
-		//)
+		if helpers.HasCompoundingWithdrawalCredential(validator) && hasSufficientEffectiveBalance && hasExcessBalance {
+			balanceSubMin, err := math.Sub64(balanceAtIndex, params.BeaconConfig().MinActivationBalance)
+			if err != nil {
+				return nil, err
+			}
+			balanceAfterAdjustments, err := math.Sub64(balanceSubMin, pendingBalanceToWithdraw)
+			if err != nil {
+				return nil, err
+			}
+			//to_withdraw = min(
+			//	state.balances[index] - MIN_ACTIVATION_BALANCE - pending_balance_to_withdraw,
+			//	amount
+			//)
+			toWithdraw := math.Min(balanceAfterAdjustments, amount)
+			exitQueueEpoch :=
+				beaconState.AppendPendingPartialWithdrawal()
+		}
+
 		//exit_queue_epoch = compute_exit_epoch_and_update_churn(state, to_withdraw)
 		//withdrawable_epoch = Epoch(exit_queue_epoch + MIN_VALIDATOR_WITHDRAWABILITY_DELAY)
 		//state.pending_partial_withdrawals.append(PendingPartialWithdrawal(

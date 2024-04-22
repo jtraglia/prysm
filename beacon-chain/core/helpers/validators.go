@@ -471,3 +471,60 @@ func LastActivatedValidatorIndex(ctx context.Context, st state.ReadOnlyBeaconSta
 	}
 	return lastActivatedvalidatorIndex, nil
 }
+
+// HasExecutionWithdrawalCredentials checks if the validator has an execution withdrawal credential or compounding credential.
+// New in EIP-7251: https://eips.ethereum.org/EIPS/eip-7251
+//
+// Spec definition:
+//
+//	def has_execution_withdrawal_credential(validator: Validator) -> bool:
+//	    """
+//	    Check if ``validator`` has a 0x01 or 0x02 prefixed withdrawal credential.
+//	    """
+//	    return has_compounding_withdrawal_credential(validator) or has_eth1_withdrawal_credential(validator)
+func HasExecutionWithdrawalCredentials(v state.ReadOnlyValidator) bool {
+	if v == nil {
+		return false
+	}
+	return HasCompoundingWithdrawalCredential(v) || HasETH1WithdrawalCredential(v)
+}
+
+// HasCompoundingWithdrawalCredential checks if the validator has a compounding withdrawal credential.
+// New in EIP-7251: https://eips.ethereum.org/EIPS/eip-7251
+//
+// Spec definition:
+//
+//	def has_compounding_withdrawal_credential(validator: Validator) -> bool:
+//	    """
+//	    Check if ``validator`` has an 0x02 prefixed "compounding" withdrawal credential.
+//	    """
+//	    return validator.withdrawal_credentials[:1] == COMPOUNDING_WITHDRAWAL_PREFIX
+func HasCompoundingWithdrawalCredential(v state.ReadOnlyValidator) bool {
+	if v == nil {
+		return false
+	}
+	return isCompoundingWithdrawalCredential(v.WithdrawalCredentials())
+}
+
+// isCompoundingWithdrawalCredential checks if the credentials are a compounding withdrawal credential.
+//
+// Spec definition:
+//
+//	def is_compounding_withdrawal_credential(withdrawal_credentials: Bytes32) -> bool:
+//	    return withdrawal_credentials[:1] == COMPOUNDING_WITHDRAWAL_PREFIX
+func isCompoundingWithdrawalCredential(creds []byte) bool {
+	return bytes.HasPrefix(creds, []byte{params.BeaconConfig().CompoundingWithdrawalPrefix})
+}
+
+// HasETH1WithdrawalCredential returns whether the validator has an ETH1
+// Withdrawal prefix. It assumes that the caller has a lock on the state
+func HasETH1WithdrawalCredential(val state.ReadOnlyValidator) bool {
+	if val == nil {
+		return false
+	}
+	return isETH1WithdrawalCredential(val.WithdrawalCredentials())
+}
+
+func isETH1WithdrawalCredential(creds []byte) bool {
+	return bytes.HasPrefix(creds, []byte{params.BeaconConfig().ETH1AddressWithdrawalPrefixByte})
+}

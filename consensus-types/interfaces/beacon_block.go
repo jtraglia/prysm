@@ -67,7 +67,7 @@ type ReadOnlyBeaconBlockBody interface {
 	Eth1Data() *ethpb.Eth1Data
 	Graffiti() [field_params.RootLength]byte
 	ProposerSlashings() []*ethpb.ProposerSlashing
-	AttesterSlashings() []*ethpb.AttesterSlashing
+	AttesterSlashings() []AttesterSlashing
 	Attestations() []Attestation
 	Deposits() []*ethpb.Deposit
 	VoluntaryExits() []*ethpb.SignedVoluntaryExit
@@ -78,6 +78,7 @@ type ReadOnlyBeaconBlockBody interface {
 	Execution() (ExecutionData, error)
 	BLSToExecutionChanges() ([]*ethpb.SignedBLSToExecutionChange, error)
 	BlobKzgCommitments() ([][]byte, error)
+	Consolidations() ([]*ethpb.SignedConsolidation, error)
 }
 
 type SignedBeaconBlock interface {
@@ -88,8 +89,8 @@ type SignedBeaconBlock interface {
 	SetSyncAggregate(*ethpb.SyncAggregate) error
 	SetVoluntaryExits([]*ethpb.SignedVoluntaryExit)
 	SetDeposits([]*ethpb.Deposit)
-	SetAttestations([]Attestation)
-	SetAttesterSlashings([]*ethpb.AttesterSlashing)
+	SetAttestations([]Attestation) error
+	SetAttesterSlashings([]AttesterSlashing) error
 	SetProposerSlashings([]*ethpb.ProposerSlashing)
 	SetGraffiti([]byte)
 	SetEth1Data(*ethpb.Eth1Data)
@@ -133,8 +134,11 @@ type ExecutionData interface {
 	PbCapella() (*enginev1.ExecutionPayloadCapella, error)
 	PbBellatrix() (*enginev1.ExecutionPayload, error)
 	PbDeneb() (*enginev1.ExecutionPayloadDeneb, error)
+	PbElectra() (*enginev1.ExecutionPayloadElectra, error)
 	ValueInWei() (math.Wei, error)
 	ValueInGwei() (uint64, error)
+	DepositReceipts() ([]*enginev1.DepositReceipt, error)
+	WithdrawalRequests() ([]*enginev1.ExecutionLayerWithdrawalRequest, error)
 }
 
 type Attestation interface {
@@ -144,37 +148,19 @@ type Attestation interface {
 	ssz.HashRoot
 	Version() int
 	GetAggregationBits() bitfield.Bitlist
-	SetAggregationBits(bits bitfield.Bitlist)
 	GetData() *ethpb.AttestationData
-	SetData(data *ethpb.AttestationData)
-	GetCommitteeBits() bitfield.Bitlist
-	SetCommitteeBits(bits bitfield.Bitlist)
+	GetCommitteeBitsVal() bitfield.Bitfield
 	GetSignature() []byte
-	SetSignature(sig []byte)
 }
 
-type AggregateAttestationAndProof interface {
+type AttesterSlashing interface {
 	proto.Message
 	ssz.Marshaler
 	ssz.Unmarshaler
 	ssz.HashRoot
-	GetAggregatorIndex() primitives.ValidatorIndex
-	SetAggregatorIndex(index primitives.ValidatorIndex)
-	GetAttestation() Attestation
-	SetAttestation(att Attestation)
-	GetSelectionProof() []byte
-	SetSelectionProof(proof []byte)
-}
-
-type SignedAggregateAttestationAndProof interface {
-	proto.Message
-	ssz.Marshaler
-	ssz.Unmarshaler
-	ssz.HashRoot
-	GetAggregateAttestationAndProof() AggregateAttestationAndProof
-	SetAggregateAttestationAndProof(agg AggregateAttestationAndProof)
-	GetSignature() []byte
-	SetSignature(sig []byte)
+	Version() int
+	GetFirstAttestation() ethpb.IndexedAtt
+	GetSecondAttestation() ethpb.IndexedAtt
 }
 
 // TODO: this is ugly. The proper way to do this is to create a Copy() function on the interface and implement it. But this results in a circular dependency.

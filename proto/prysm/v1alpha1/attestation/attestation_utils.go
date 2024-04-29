@@ -126,17 +126,17 @@ func AttestingIndices(att interfaces.Attestation, committees [][]primitives.Vali
 //	 domain = get_domain(state, DOMAIN_BEACON_ATTESTER, indexed_attestation.data.target.epoch)
 //	 signing_root = compute_signing_root(indexed_attestation.data, domain)
 //	 return bls.FastAggregateVerify(pubkeys, signing_root, indexed_attestation.signature)
-func VerifyIndexedAttestationSig(ctx context.Context, indexedAtt *ethpb.IndexedAttestation, pubKeys []bls.PublicKey, domain []byte) error {
+func VerifyIndexedAttestationSig(ctx context.Context, indexedAtt ethpb.IndexedAtt, pubKeys []bls.PublicKey, domain []byte) error {
 	_, span := trace.StartSpan(ctx, "attestationutil.VerifyIndexedAttestationSig")
 	defer span.End()
-	indices := indexedAtt.AttestingIndices
+	indices := indexedAtt.GetAttestingIndices()
 
-	messageHash, err := signing.ComputeSigningRoot(indexedAtt.Data, domain)
+	messageHash, err := signing.ComputeSigningRoot(indexedAtt.GetData(), domain)
 	if err != nil {
 		return errors.Wrap(err, "could not get signing root of object")
 	}
 
-	sig, err := bls.SignatureFromBytes(indexedAtt.Signature)
+	sig, err := bls.SignatureFromBytes(indexedAtt.GetSignature())
 	if err != nil {
 		return errors.Wrap(err, "could not convert bytes to signature")
 	}
@@ -167,14 +167,17 @@ func VerifyIndexedAttestationSig(ctx context.Context, indexedAtt *ethpb.IndexedA
 //	  domain = get_domain(state, DOMAIN_BEACON_ATTESTER, indexed_attestation.data.target.epoch)
 //	  signing_root = compute_signing_root(indexed_attestation.data, domain)
 //	  return bls.FastAggregateVerify(pubkeys, signing_root, indexed_attestation.signature)
-func IsValidAttestationIndices(ctx context.Context, indexedAttestation *ethpb.IndexedAttestation) error {
+func IsValidAttestationIndices(ctx context.Context, indexedAttestation ethpb.IndexedAtt) error {
 	_, span := trace.StartSpan(ctx, "attestationutil.IsValidAttestationIndices")
 	defer span.End()
 
-	if indexedAttestation == nil || indexedAttestation.Data == nil || indexedAttestation.Data.Target == nil || indexedAttestation.AttestingIndices == nil {
+	if indexedAttestation == nil ||
+		indexedAttestation.GetData() == nil ||
+		indexedAttestation.GetData().Target == nil ||
+		indexedAttestation.GetAttestingIndices() == nil {
 		return errors.New("nil or missing indexed attestation data")
 	}
-	indices := indexedAttestation.AttestingIndices
+	indices := indexedAttestation.GetAttestingIndices()
 	if len(indices) == 0 {
 		return errors.New("expected non-empty attesting indices")
 	}

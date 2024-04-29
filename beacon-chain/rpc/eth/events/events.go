@@ -234,7 +234,11 @@ func handleBlockOperationEvents(w http.ResponseWriter, flusher http.Flusher, req
 		if !ok {
 			return write(w, flusher, topicDataMismatch, event.Data, AttesterSlashingTopic)
 		}
-		return send(w, flusher, AttesterSlashingTopic, structs.AttesterSlashingFromConsensus(attesterSlashingData.AttesterSlashing))
+		slashing, ok := attesterSlashingData.AttesterSlashing.(*eth.AttesterSlashing)
+		if ok {
+			return send(w, flusher, AttesterSlashingTopic, structs.AttesterSlashingFromConsensus(slashing))
+		}
+		// TODO: extend to Electra
 	case operation.ProposerSlashingReceived:
 		if _, ok := requestedTopics[ProposerSlashingTopic]; !ok {
 			return nil

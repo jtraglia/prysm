@@ -118,10 +118,6 @@ func VerifyAttestationNoVerifySignature(
 			return fmt.Errorf("committee index %d >= committee count %d", att.GetData().CommitteeIndex, c)
 		}
 
-		if err := helpers.VerifyAttestationBitfieldLengths(ctx, beaconState, att); err != nil {
-			return errors.Wrap(err, "could not verify attestation bitfields")
-		}
-
 		// Verify attesting indices are correct.
 		committee, err := helpers.BeaconCommitteeFromState(ctx, beaconState, att.GetData().Slot, att.GetData().CommitteeIndex)
 		if err != nil {
@@ -241,7 +237,7 @@ func VerifyAttestationSignature(ctx context.Context, beaconState state.ReadOnlyB
 //	  domain = get_domain(state, DOMAIN_BEACON_ATTESTER, indexed_attestation.data.target.epoch)
 //	  signing_root = compute_signing_root(indexed_attestation.data, domain)
 //	  return bls.FastAggregateVerify(pubkeys, signing_root, indexed_attestation.signature)
-func VerifyIndexedAttestation(ctx context.Context, beaconState state.ReadOnlyBeaconState, indexedAtt *ethpb.IndexedAttestation) error {
+func VerifyIndexedAttestation(ctx context.Context, beaconState state.ReadOnlyBeaconState, indexedAtt ethpb.IndexedAtt) error {
 	ctx, span := trace.StartSpan(ctx, "core.VerifyIndexedAttestation")
 	defer span.End()
 
@@ -250,14 +246,14 @@ func VerifyIndexedAttestation(ctx context.Context, beaconState state.ReadOnlyBea
 	}
 	domain, err := signing.Domain(
 		beaconState.Fork(),
-		indexedAtt.Data.Target.Epoch,
+		indexedAtt.GetData().Target.Epoch,
 		params.BeaconConfig().DomainBeaconAttester,
 		beaconState.GenesisValidatorsRoot(),
 	)
 	if err != nil {
 		return err
 	}
-	indices := indexedAtt.AttestingIndices
+	indices := indexedAtt.GetAttestingIndices()
 	var pubkeys []bls.PublicKey
 	for i := 0; i < len(indices); i++ {
 		pubkeyAtIdx := beaconState.PubkeyAtIndex(primitives.ValidatorIndex(indices[i]))

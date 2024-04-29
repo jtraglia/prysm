@@ -159,6 +159,7 @@ type AttesterSlashing interface {
 	ssz.Marshaler
 	ssz.Unmarshaler
 	ssz.HashRoot
+	Version() int
 	GetFirstAttestation() ethpb.IndexedAtt
 	SetFirstAttestation(att ethpb.IndexedAtt)
 	GetSecondAttestation() ethpb.IndexedAtt

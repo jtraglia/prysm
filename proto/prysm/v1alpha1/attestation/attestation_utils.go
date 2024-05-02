@@ -192,6 +192,8 @@ func VerifyIndexedAttestationSig(ctx context.Context, indexedAtt ethpb.IndexedAt
 //	  domain = get_domain(state, DOMAIN_BEACON_ATTESTER, indexed_attestation.data.target.epoch)
 //	  signing_root = compute_signing_root(indexed_attestation.data, domain)
 //	  return bls.FastAggregateVerify(pubkeys, signing_root, indexed_attestation.signature)
+//
+// TODO: eip-7549-beacon-spec
 func IsValidAttestationIndices(ctx context.Context, indexedAttestation ethpb.IndexedAtt) error {
 	_, span := trace.StartSpan(ctx, "attestationutil.IsValidAttestationIndices")
 	defer span.End()
@@ -206,9 +208,16 @@ func IsValidAttestationIndices(ctx context.Context, indexedAttestation ethpb.Ind
 	if len(indices) == 0 {
 		return errors.New("expected non-empty attesting indices")
 	}
-	maxLength := params.BeaconConfig().MaxValidatorsPerCommittee * params.BeaconConfig().MaxCommitteesPerSlot
-	if uint64(len(indices)) > maxLength {
-		return fmt.Errorf("validator indices count exceeds MAX_VALIDATORS_PER_COMMITTEE * MAX_COMMITTEES_PER_SLOT, %d > %d", len(indices), maxLength)
+	if indexedAttestation.Version() < version.Electra {
+		maxLength := params.BeaconConfig().MaxValidatorsPerCommittee
+		if uint64(len(indices)) > maxLength {
+			return fmt.Errorf("validator indices count exceeds MAX_VALIDATORS_PER_COMMITTEE, %d > %d", len(indices), maxLength)
+		}
+	} else {
+		maxLength := params.BeaconConfig().MaxValidatorsPerCommittee * params.BeaconConfig().MaxCommitteesPerSlot
+		if uint64(len(indices)) > maxLength {
+			return fmt.Errorf("validator indices count exceeds MAX_VALIDATORS_PER_COMMITTEE * MAX_COMMITTEES_PER_SLOT, %d > %d", len(indices), maxLength)
+		}
 	}
 	for i := 1; i < len(indices); i++ {
 		if indices[i-1] >= indices[i] {

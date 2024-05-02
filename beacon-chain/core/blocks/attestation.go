@@ -118,6 +118,10 @@ func VerifyAttestationNoVerifySignature(
 			return fmt.Errorf("committee index %d >= committee count %d", att.GetData().CommitteeIndex, c)
 		}
 
+		if err = helpers.VerifyAttestationBitfieldLengths(ctx, beaconState, att); err != nil {
+			return errors.Wrap(err, "could not verify attestation bitfields")
+		}
+
 		// Verify attesting indices are correct.
 		committee, err := helpers.BeaconCommitteeFromState(ctx, beaconState, att.GetData().Slot, att.GetData().CommitteeIndex)
 		if err != nil {

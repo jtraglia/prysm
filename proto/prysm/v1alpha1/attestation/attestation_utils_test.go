@@ -91,7 +91,7 @@ func TestAttestingIndices(t *testing.T) {
 func TestIsValidAttestationIndices(t *testing.T) {
 	tests := []struct {
 		name      string
-		att       *eth.IndexedAttestation
+		att       eth.IndexedAtt
 		wantedErr string
 	}{
 		{
@@ -166,6 +166,17 @@ func TestIsValidAttestationIndices(t *testing.T) {
 				},
 				Signature: make([]byte, fieldparams.BLSSignatureLength),
 			},
+		},
+		{
+			name: "Electra - Greater than max validators per slot",
+			att: &eth.IndexedAttestationElectra{
+				AttestingIndices: make([]uint64, params.BeaconConfig().MaxValidatorsPerCommittee*params.BeaconConfig().MaxCommitteesPerSlot+1),
+				Data: &eth.AttestationData{
+					Target: &eth.Checkpoint{},
+				},
+				Signature: make([]byte, fieldparams.BLSSignatureLength),
+			},
+			wantedErr: "indices count exceeds",
 		},
 	}
 	for _, tt := range tests {

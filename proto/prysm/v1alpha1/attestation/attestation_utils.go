@@ -62,20 +62,30 @@ func ConvertToIndexed(ctx context.Context, attestation interfaces.Attestation, c
 	}, nil
 }
 
-// AttestingIndices returns the attesting participants indices from the attestation data. The
-// committee is provided as an argument rather than a imported implementation from the spec definition.
-// Having the committee as an argument allows for re-use of beacon committees when possible.
+// AttestingIndices returns the attesting participants indices from the attestation data.
+// Committees are provided as an argument rather than an imported implementation from the spec definition.
+// Having committees as an argument allows for re-use of beacon committees when possible.
 //
-// Spec pseudocode definition:
+// Spec pseudocode definition (Electra version):
 //
-//	def get_attesting_indices(state: BeaconState,
-//	                       data: AttestationData,
-//	                       bits: Bitlist[MAX_VALIDATORS_PER_COMMITTEE]) -> Set[ValidatorIndex]:
-//	 """
-//	 Return the set of attesting indices corresponding to ``data`` and ``bits``.
-//	 """
-//	 committee = get_beacon_committee(state, data.slot, data.index)
-//	 return set(index for i, index in enumerate(committee) if bits[i])
+//	def get_attesting_indices(state: BeaconState, attestation: Attestation) -> Set[ValidatorIndex]:
+//	    """
+//	    Return the set of attesting indices corresponding to ``aggregation_bits`` and ``committee_bits``.
+//	    """
+//	    output: Set[ValidatorIndex] = set()
+//	    committee_indices = get_committee_indices(attestation.committee_bits)
+//	    committee_offset = 0
+//	    for index in committee_indices:
+//	        committee = get_beacon_committee(state, attestation.data.slot, index)
+//	        committee_attesters = set(
+//	        index for i, index in enumerate(committee) if attestation.aggregation_bits[committee_offset + i])
+//	        output = output.union(committee_attesters)
+//
+//	        committee_offset += len(committee)
+//
+//	    return output
+//
+// TODO: eip-7549-beacon-spec
 func AttestingIndices(att interfaces.Attestation, committees [][]primitives.ValidatorIndex) ([]uint64, error) {
 	if len(committees) == 0 {
 		return []uint64{}, nil
@@ -98,13 +108,21 @@ func AttestingIndices(att interfaces.Attestation, committees [][]primitives.Vali
 		return indices, nil
 	}
 
-	attesters := make([]uint64, 0, len(aggBits))
+	committeesLen := 0
+	for _, c := range committees {
+		committeesLen += len(c)
+	}
+	if aggBits.Len() != uint64(committeesLen) {
+		return nil, fmt.Errorf("bitfield length %d is not equal to committee length %d", aggBits.Len(), committeesLen)
+	}
+
+	attesters := make([]uint64, 0, aggBits.Count())
 	committeeOffset := 0
 	for _, c := range committees {
 		committeeAttesters := make([]uint64, 0, len(c))
 		for i, vi := range c {
-			if aggBits[committeeOffset+i] == 1 {
-				committeeAttesters = append(committeeAttesters, uint64(c[vi]))
+			if aggBits.BitAt(uint64(committeeOffset + i)) {
+				committeeAttesters = append(committeeAttesters, uint64(vi))
 			}
 		}
 		attesters = append(attesters, committeeAttesters...)

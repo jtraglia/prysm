@@ -295,7 +295,14 @@ func ShuffledIndices(s state.ReadOnlyBeaconState, epoch primitives.Epoch) ([]pri
 	return UnshuffleList(indices, seed)
 }
 
-// TODO: doc
+// CommitteeIndices return beacon committee indices corresponding to bits that are set on the argument bitfield.
+//
+// Spec pseudocode definition:
+//
+//	def get_committee_indices(committee_bits: Bitvector) -> Sequence[CommitteeIndex]:
+//	   return [CommitteeIndex(index) for index, bit in enumerate(committee_bits) if bit]
+//
+// TODO: eip-7549-beacon-spec
 func CommitteeIndices(committeeBits bitfield.Bitfield) []primitives.CommitteeIndex {
 	indices := committeeBits.BitIndices()
 	committeeIndices := make([]primitives.CommitteeIndex, len(indices))

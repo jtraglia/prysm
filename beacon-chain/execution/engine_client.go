@@ -772,43 +772,39 @@ func fullPayloadFromExecutionBlock(
 				ExcessBlobGas: ebg,
 			}, big.NewInt(0)) // We can't get the block value and don't care about the block value for this instance
 	case version.Electra:
-		ebg, err := header.ExcessBlobGas()
+		h, ok := header.(interfaces.ExecutionDataElectra)
+		if !ok {
+			return nil, errors.New("header is not an Electra execution data")
+		}
+		ebg, err := h.ExcessBlobGas()
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to extract ExcessBlobGas attribute from execution payload header")
 		}
-		bgu, err := header.BlobGasUsed()
+		bgu, err := h.BlobGasUsed()
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to extract BlobGasUsed attribute from execution payload header")
 		}
-		drs, err := header.DepositReceipts()
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to extract DepositReceipts attribute from execution payload header")
-		}
-		wrs, err := header.WithdrawalRequests()
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to extra WithdrawalRequests attribute from execution payload header")
-		}
 		return blocks.WrappedExecutionPayloadElectra(
 			&pb.ExecutionPayloadElectra{
-				ParentHash:         header.ParentHash(),
-				FeeRecipient:       header.FeeRecipient(),
-				StateRoot:          header.StateRoot(),
-				ReceiptsRoot:       header.ReceiptsRoot(),
-				LogsBloom:          header.LogsBloom(),
-				PrevRandao:         header.PrevRandao(),
-				BlockNumber:        header.BlockNumber(),
-				GasLimit:           header.GasLimit(),
-				GasUsed:            header.GasUsed(),
-				Timestamp:          header.Timestamp(),
-				ExtraData:          header.ExtraData(),
-				BaseFeePerGas:      header.BaseFeePerGas(),
+				ParentHash:         h.ParentHash(),
+				FeeRecipient:       h.FeeRecipient(),
+				StateRoot:          h.StateRoot(),
+				ReceiptsRoot:       h.ReceiptsRoot(),
+				LogsBloom:          h.LogsBloom(),
+				PrevRandao:         h.PrevRandao(),
+				BlockNumber:        h.BlockNumber(),
+				GasLimit:           h.GasLimit(),
+				GasUsed:            h.GasUsed(),
+				Timestamp:          h.Timestamp(),
+				ExtraData:          h.ExtraData(),
+				BaseFeePerGas:      h.BaseFeePerGas(),
 				BlockHash:          blockHash[:],
 				Transactions:       txs,
 				Withdrawals:        block.Withdrawals,
 				BlobGasUsed:        bgu,
 				ExcessBlobGas:      ebg,
-				DepositReceipts:    drs,
-				WithdrawalRequests: wrs,
+				DepositReceipts:    h.DepositReceipts(),
+				WithdrawalRequests: h.WithdrawalRequests(),
 			}, big.NewInt(0)) // We can't get the block value and don't care about the block value for this instance
 	default:
 		return nil, fmt.Errorf("unknown execution block version %d", block.Version)
@@ -888,43 +884,39 @@ func fullPayloadFromPayloadBody(
 				BlobGasUsed:   bgu,
 			}, big.NewInt(0)) // We can't get the block value and don't care about the block value for this instance
 	case version.Electra:
-		ebg, err := header.ExcessBlobGas()
+		h, ok := header.(interfaces.ExecutionDataElectra)
+		if !ok {
+			return nil, errors.New("header is not an Electra execution data")
+		}
+		ebg, err := h.ExcessBlobGas()
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to extract ExcessBlobGas attribute from execution payload header")
 		}
-		bgu, err := header.BlobGasUsed()
+		bgu, err := h.BlobGasUsed()
 		if err != nil {
 			return nil, errors.Wrap(err, "unable to extract BlobGasUsed attribute from execution payload header")
 		}
-		drs, err := header.DepositReceipts()
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to extract DepositReceipts attribute from execution payload header")
-		}
-		wrs, err := header.WithdrawalRequests()
-		if err != nil {
-			return nil, errors.Wrap(err, "unable to extra WithdrawalRequests attribute from execution payload header")
-		}
 		return blocks.WrappedExecutionPayloadElectra(
 			&pb.ExecutionPayloadElectra{
-				ParentHash:         header.ParentHash(),
-				FeeRecipient:       header.FeeRecipient(),
-				StateRoot:          header.StateRoot(),
-				ReceiptsRoot:       header.ReceiptsRoot(),
-				LogsBloom:          header.LogsBloom(),
-				PrevRandao:         header.PrevRandao(),
-				BlockNumber:        header.BlockNumber(),
-				GasLimit:           header.GasLimit(),
-				GasUsed:            header.GasUsed(),
-				Timestamp:          header.Timestamp(),
-				ExtraData:          header.ExtraData(),
-				BaseFeePerGas:      header.BaseFeePerGas(),
-				BlockHash:          header.BlockHash(),
+				ParentHash:         h.ParentHash(),
+				FeeRecipient:       h.FeeRecipient(),
+				StateRoot:          h.StateRoot(),
+				ReceiptsRoot:       h.ReceiptsRoot(),
+				LogsBloom:          h.LogsBloom(),
+				PrevRandao:         h.PrevRandao(),
+				BlockNumber:        h.BlockNumber(),
+				GasLimit:           h.GasLimit(),
+				GasUsed:            h.GasUsed(),
+				Timestamp:          h.Timestamp(),
+				ExtraData:          h.ExtraData(),
+				BaseFeePerGas:      h.BaseFeePerGas(),
+				BlockHash:          h.BlockHash(),
 				Transactions:       body.Transactions,
 				Withdrawals:        body.Withdrawals,
 				ExcessBlobGas:      ebg,
 				BlobGasUsed:        bgu,
-				DepositReceipts:    drs,
-				WithdrawalRequests: wrs,
+				DepositReceipts:    h.DepositReceipts(),
+				WithdrawalRequests: h.WithdrawalRequests(),
 			}, big.NewInt(0)) // We can't get the block value and don't care about the block value for this instance
 	default:
 		return nil, fmt.Errorf("unknown execution block version for payload %d", bVersion)

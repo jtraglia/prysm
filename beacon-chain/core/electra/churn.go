@@ -6,6 +6,7 @@ import (
 	"github.com/prysmaticlabs/prysm/v5/beacon-chain/core/helpers"
 	"github.com/prysmaticlabs/prysm/v5/beacon-chain/state"
 	"github.com/prysmaticlabs/prysm/v5/consensus-types/primitives"
+	"github.com/prysmaticlabs/prysm/v5/math"
 	"github.com/prysmaticlabs/prysm/v5/time/slots"
 )
 
@@ -35,7 +36,7 @@ import (
 //	    state.earliest_consolidation_epoch = earliest_consolidation_epoch
 //
 //	    return state.earliest_consolidation_epoch
-func ComputeConsolidationEpochAndUpdateChurn(ctx context.Context, s state.BeaconState, consolidationBalance uint64) (primitives.Epoch, error) {
+func ComputeConsolidationEpochAndUpdateChurn(ctx context.Context, s state.BeaconState, consolidationBalance math.Gwei) (primitives.Epoch, error) {
 	earliestEpoch, err := s.EarliestConsolidationEpoch()
 	if err != nil {
 		return 0, err
@@ -45,10 +46,10 @@ func ComputeConsolidationEpochAndUpdateChurn(ctx context.Context, s state.Beacon
 	if err != nil {
 		return 0, err
 	}
-	perEpochConsolidationChurn := helpers.ConsolidationChurnLimit(activeBal)
+	perEpochConsolidationChurn := helpers.ConsolidationChurnLimit(math.Gwei(activeBal))
 
 	// New epoch for consolidations.
-	var consolidationBalanceToConsume uint64
+	var consolidationBalanceToConsume math.Gwei
 	if earliestEpoch < earliestConsolidationEpoch {
 		consolidationBalanceToConsume = perEpochConsolidationChurn
 	} else {

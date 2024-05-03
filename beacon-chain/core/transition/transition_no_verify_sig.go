@@ -426,38 +426,35 @@ func electraOperations(
 	st state.BeaconState,
 	block interfaces.ReadOnlyBeaconBlock) (state.BeaconState, error) {
 
-  // TODO: EIP-6110 deposit changes.
+	// TODO: EIP-6110 deposit changes.
 
 	// Electra extends the altair operations.
 	st, err := altairOperations(ctx, st, block)
 	if err != nil {
 		return nil, err
 	}
-	exe, err := block.Body().Execution()
+	b := block.Body()
+	bod, ok := b.(interfaces.ROBlockBodyElectra)
+	if !ok {
+		return nil, errors.New("could not cast block body to electra block body")
+	}
+	e, err := bod.Execution()
 	if err != nil {
 		return nil, errors.Wrap(err, "could not get execution data from block")
 	}
-	wrs, err := exe.WithdrawalRequests()
-	if err != nil {
-		return nil, errors.Wrap(err, "could not get withdrawal requests")
-  }
-	st, err = electra.ProcessExecutionLayerWithdrawRequests(ctx, st, wrs)
+	exe, ok := e.(interfaces.ExecutionDataElectra)
+	if !ok {
+		return nil, errors.New("could not cast execution data to electra execution data")
+	}
+	st, err = electra.ProcessExecutionLayerWithdrawRequests(ctx, st, exe.WithdrawalRequests())
 	if err != nil {
 		return nil, errors.Wrap(err, "could not process execution layer withdrawal requests")
 	}
-	drs, err := exe.DepositReceipts()
-	if err != nil {
-		return nil, errors.Wrap(err, "could not get deposit receipts from execution data")
-	}
-	st, err = electra.ProcessDepositReceipts(ctx, st, drs)
+	st, err = electra.ProcessDepositReceipts(ctx, st, exe.DepositReceipts())
 	if err != nil {
 		return nil, errors.Wrap(err, "could not process deposit receipts")
 	}
-	cs, err := block.Body().Consolidations()
-	if err != nil {
-		return nil, errors.Wrap(err, "could not get consolidations")
-	}
-	st, err = electra.ProcessConsolidations(ctx, st, cs)
+	st, err = electra.ProcessConsolidations(ctx, st, bod.Consolidations())
 	if err != nil {
 		return nil, errors.Wrap(err, "could not process consolidations")
 	}

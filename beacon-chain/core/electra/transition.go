@@ -16,6 +16,7 @@ import (
 	"github.com/prysmaticlabs/prysm/v5/config/params"
 	"github.com/prysmaticlabs/prysm/v5/crypto/bls"
 	"github.com/prysmaticlabs/prysm/v5/encoding/bytesutil"
+	"github.com/prysmaticlabs/prysm/v5/math"
 	enginev1 "github.com/prysmaticlabs/prysm/v5/proto/engine/v1"
 	ethpb "github.com/prysmaticlabs/prysm/v5/proto/prysm/v1alpha1"
 	"github.com/prysmaticlabs/prysm/v5/time/slots"
@@ -107,7 +108,7 @@ func ProcessEpoch(ctx context.Context, state state.BeaconState) (state.BeaconSta
 	if err != nil {
 		return nil, err
 	}
-	state, err = ProcessPendingBalanceDeposits(ctx, state, bp.ActiveCurrentEpoch)
+	state, err = ProcessPendingBalanceDeposits(ctx, state, math.Gwei(bp.ActiveCurrentEpoch))
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +168,7 @@ func ProcessEpoch(ctx context.Context, state state.BeaconState) (state.BeaconSta
 //	        state.deposit_balance_to_consume = Gwei(0)
 //	    else:
 //	        state.deposit_balance_to_consume = available_for_processing - processed_amount
-func ProcessPendingBalanceDeposits(ctx context.Context, st state.BeaconState, activeBalance uint64) (state.BeaconState, error) {
+func ProcessPendingBalanceDeposits(ctx context.Context, st state.BeaconState, activeBalance math.Gwei) (state.BeaconState, error) {
 	_, span := trace.StartSpan(ctx, "electra.ProcessPendingBalanceDeposits")
 	defer span.End()
 
@@ -179,10 +180,10 @@ func ProcessPendingBalanceDeposits(ctx context.Context, st state.BeaconState, ac
 	if err != nil {
 		return nil, err
 	}
-	var activeBalGwei uint64 // TODO: get_active_balance(state)
+	var activeBalGwei math.Gwei // TODO: get_active_balance(state)
 
 	availableForProcessing := depBalToConsume + helpers.ActivationExitChurnLimit(activeBalGwei)
-	processedAmount := uint64(0)
+	processedAmount := math.Gwei(0)
 	nextDepositIndex := 0
 
 	deposits, err := st.PendingBalanceDeposits()
@@ -191,13 +192,13 @@ func ProcessPendingBalanceDeposits(ctx context.Context, st state.BeaconState, ac
 	}
 
 	for _, deposit := range deposits {
-		if processedAmount+deposit.Amount > availableForProcessing {
+		if processedAmount+math.Gwei(deposit.Amount) > availableForProcessing {
 			break
 		}
 		if err := helpers.IncreaseBalance(st, deposit.Index, deposit.Amount); err != nil {
 			return nil, err
 		}
-		processedAmount += deposit.Amount
+		processedAmount += math.Gwei(deposit.Amount)
 		nextDepositIndex++
 	}
 
@@ -358,7 +359,9 @@ func ProcessConsolidations(ctx context.Context, st state.BeaconState, cs []*ethp
 		}
 
 		// TODO: can these be moved outside of the loop?
-		if st.NumPendingConsolidations() >= params.BeaconConfig().PendingConsolidationsLimit {
+		if n, err := st.NumPendingConsolidations(); err != nil {
+			return nil, err
+		} else if n >= params.BeaconConfig().PendingConsolidationsLimit {
 			return nil, errors.New("pending consolidations queue is full")
 		}
 
@@ -366,7 +369,7 @@ func ProcessConsolidations(ctx context.Context, st state.BeaconState, cs []*ethp
 		if err != nil {
 			return nil, err
 		}
-		if helpers.ConsolidationChurnLimit(totalBalance) <= params.BeaconConfig().MinActivationBalance {
+		if helpers.ConsolidationChurnLimit(math.Gwei(totalBalance)) <= math.Gwei(params.BeaconConfig().MinActivationBalance) {
 			return nil, errors.New("too little available consolidation churn limit")
 		}
 		currentEpoch := slots.ToEpoch(st.Slot())
@@ -429,7 +432,7 @@ func ProcessConsolidations(ctx context.Context, st state.BeaconState, cs []*ethp
 			return nil, errors.New("consolidation signature verification failed")
 		}
 
-		sEE, err := ComputeConsolidationEpochAndUpdateChurn(ctx, st, source.EffectiveBalance)
+		sEE, err := ComputeConsolidationEpochAndUpdateChurn(ctx, st, math.Gwei(source.EffectiveBalance))
 		if err != nil {
 			return nil, err
 		}
@@ -519,7 +522,9 @@ func ProcessExecutionLayerWithdrawRequests(ctx context.Context, st state.BeaconS
 		amount := wr.Amount
 		isFullExitRequest := amount == params.BeaconConfig().FullExitRequestAmount
 		// If partial withdrawal queue is full, only full exits are processed
-		if st.NumPendingPartialWithdrawals() == params.BeaconConfig().PendingPartialWithdrawalsLimit && !isFullExitRequest {
+		if n, err := st.NumPendingPartialWithdrawals(); err != nil {
+			return nil, err
+		} else if n == params.BeaconConfig().PendingPartialWithdrawalsLimit && !isFullExitRequest {
 			continue
 		}
 
@@ -572,7 +577,7 @@ func ProcessExecutionLayerWithdrawRequests(ctx context.Context, st state.BeaconS
 		// Only allow partial withdrawals with compounding withdrawal credentials
 		if helpers.HasCompoundingWithdrawalCredential(validator) && hasSufficientEffectiveBalance && hasExcessBalance {
 			toWithdraw := min(vBal-params.BeaconConfig().MinActivationBalance-pendingBalanceToWithdraw, amount)
-			exitQueueEpoch, err := st.ExitEpochAndUpdateChurn(toWithdraw)
+			exitQueueEpoch, err := st.ExitEpochAndUpdateChurn(math.Gwei(toWithdraw))
 			if err != nil {
 				return nil, err
 			}

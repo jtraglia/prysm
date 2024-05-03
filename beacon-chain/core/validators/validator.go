@@ -13,6 +13,7 @@ import (
 	"github.com/prysmaticlabs/prysm/v5/beacon-chain/state"
 	"github.com/prysmaticlabs/prysm/v5/config/params"
 	"github.com/prysmaticlabs/prysm/v5/consensus-types/primitives"
+	"github.com/prysmaticlabs/prysm/v5/math"
 	ethpb "github.com/prysmaticlabs/prysm/v5/proto/prysm/v1alpha1"
 	"github.com/prysmaticlabs/prysm/v5/runtime/version"
 	"github.com/prysmaticlabs/prysm/v5/time/slots"
@@ -91,7 +92,7 @@ func InitiateValidatorExit(ctx context.Context, s state.BeaconState, idx primiti
 		}
 	} else {
 		var err error
-		exitQueueEpoch, err = s.ExitEpochAndUpdateChurn(validator.EffectiveBalance)
+		exitQueueEpoch, err = s.ExitEpochAndUpdateChurn(math.Gwei(validator.EffectiveBalance))
 		if err != nil {
 			return nil, 0, err
 		}

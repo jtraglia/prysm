@@ -31,10 +31,11 @@ func RunConsolidationTest(t *testing.T, config string) {
 
 			body := &ethpb.BeaconBlockBodyElectra{Consolidations: []*ethpb.SignedConsolidation{consolidation}}
 			processConsolidationFunc := func(ctx context.Context, s state.BeaconState, b interfaces.SignedBeaconBlock) (state.BeaconState, error) {
-				cs, err := b.Block().Body().Consolidations()
-				if err != nil {
-					return nil, err
+				body, ok := b.Block().Body().(interfaces.ROBlockBodyElectra)
+				if !ok {
+					t.Error("block body is not electra")
 				}
+				cs := body.Consolidations()
 				if len(cs) == 0 {
 					t.Error("no consolidations to test")
 				}

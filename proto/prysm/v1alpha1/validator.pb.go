@@ -1636,7 +1636,7 @@ func (x *AggregateSelectionResponse) GetAggregateAndProof() *AggregateAttestatio
 	return nil
 }
 
-type AggregateSelectionResponseElectra struct {
+type AggregateSelectionElectraResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1644,8 +1644,8 @@ type AggregateSelectionResponseElectra struct {
 	AggregateAndProof *AggregateAttestationAndProofElectra `protobuf:"bytes,1,opt,name=aggregate_and_proof,json=aggregateAndProof,proto3" json:"aggregate_and_proof,omitempty"`
 }
 
-func (x *AggregateSelectionResponseElectra) Reset() {
-	*x = AggregateSelectionResponseElectra{}
+func (x *AggregateSelectionElectraResponse) Reset() {
+	*x = AggregateSelectionElectraResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_prysm_v1alpha1_validator_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1653,13 +1653,13 @@ func (x *AggregateSelectionResponseElectra) Reset() {
 	}
 }
 
-func (x *AggregateSelectionResponseElectra) String() string {
+func (x *AggregateSelectionElectraResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AggregateSelectionResponseElectra) ProtoMessage() {}
+func (*AggregateSelectionElectraResponse) ProtoMessage() {}
 
-func (x *AggregateSelectionResponseElectra) ProtoReflect() protoreflect.Message {
+func (x *AggregateSelectionElectraResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_prysm_v1alpha1_validator_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1671,12 +1671,12 @@ func (x *AggregateSelectionResponseElectra) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AggregateSelectionResponseElectra.ProtoReflect.Descriptor instead.
-func (*AggregateSelectionResponseElectra) Descriptor() ([]byte, []int) {
+// Deprecated: Use AggregateSelectionElectraResponse.ProtoReflect.Descriptor instead.
+func (*AggregateSelectionElectraResponse) Descriptor() ([]byte, []int) {
 	return file_proto_prysm_v1alpha1_validator_proto_rawDescGZIP(), []int{27}
 }
 
-func (x *AggregateSelectionResponseElectra) GetAggregateAndProof() *AggregateAttestationAndProofElectra {
+func (x *AggregateSelectionElectraResponse) GetAggregateAndProof() *AggregateAttestationAndProofElectra {
 	if x != nil {
 		return x.AggregateAndProof
 	}
@@ -1730,7 +1730,7 @@ func (x *SignedAggregateSubmitRequest) GetSignedAggregateAndProof() *SignedAggre
 	return nil
 }
 
-type SignedAggregateSubmitRequestElectra struct {
+type SignedAggregateSubmitElectraRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1738,8 +1738,8 @@ type SignedAggregateSubmitRequestElectra struct {
 	SignedAggregateAndProof *SignedAggregateAttestationAndProofElectra `protobuf:"bytes,1,opt,name=signed_aggregate_and_proof,json=signedAggregateAndProof,proto3" json:"signed_aggregate_and_proof,omitempty"`
 }
 
-func (x *SignedAggregateSubmitRequestElectra) Reset() {
-	*x = SignedAggregateSubmitRequestElectra{}
+func (x *SignedAggregateSubmitElectraRequest) Reset() {
+	*x = SignedAggregateSubmitElectraRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_prysm_v1alpha1_validator_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1747,13 +1747,13 @@ func (x *SignedAggregateSubmitRequestElectra) Reset() {
 	}
 }
 
-func (x *SignedAggregateSubmitRequestElectra) String() string {
+func (x *SignedAggregateSubmitElectraRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SignedAggregateSubmitRequestElectra) ProtoMessage() {}
+func (*SignedAggregateSubmitElectraRequest) ProtoMessage() {}
 
-func (x *SignedAggregateSubmitRequestElectra) ProtoReflect() protoreflect.Message {
+func (x *SignedAggregateSubmitElectraRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_prysm_v1alpha1_validator_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1765,12 +1765,12 @@ func (x *SignedAggregateSubmitRequestElectra) ProtoReflect() protoreflect.Messag
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SignedAggregateSubmitRequestElectra.ProtoReflect.Descriptor instead.
-func (*SignedAggregateSubmitRequestElectra) Descriptor() ([]byte, []int) {
+// Deprecated: Use SignedAggregateSubmitElectraRequest.ProtoReflect.Descriptor instead.
+func (*SignedAggregateSubmitElectraRequest) Descriptor() ([]byte, []int) {
 	return file_proto_prysm_v1alpha1_validator_proto_rawDescGZIP(), []int{29}
 }
 
-func (x *SignedAggregateSubmitRequestElectra) GetSignedAggregateAndProof() *SignedAggregateAttestationAndProofElectra {
+func (x *SignedAggregateSubmitElectraRequest) GetSignedAggregateAndProof() *SignedAggregateAttestationAndProofElectra {
 	if x != nil {
 		return x.SignedAggregateAndProof
 	}
@@ -3430,8 +3430,8 @@ var file_proto_prysm_v1alpha1_validator_proto_rawDesc = []byte{
 	0x74, 0x65, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x41, 0x6e, 0x64,
 	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x11, 0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65,
 	0x41, 0x6e, 0x64, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x22, 0x8f, 0x01, 0x0a, 0x21, 0x41, 0x67, 0x67,
-	0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12, 0x6a,
+	0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x45,
+	0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x6a,
 	0x0a, 0x13, 0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x5f, 0x61, 0x6e, 0x64, 0x5f,
 	0x70, 0x72, 0x6f, 0x6f, 0x66, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x3a, 0x2e, 0x65, 0x74,
 	0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70,
@@ -3449,8 +3449,8 @@ var file_proto_prysm_v1alpha1_validator_proto_rawDesc = []byte{
 	0x6f, 0x6e, 0x41, 0x6e, 0x64, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x52, 0x17, 0x73, 0x69, 0x67, 0x6e,
 	0x65, 0x64, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x41, 0x6e, 0x64, 0x50, 0x72,
 	0x6f, 0x6f, 0x66, 0x22, 0xa4, 0x01, 0x0a, 0x23, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41, 0x67,
-	0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12, 0x7d, 0x0a, 0x1a, 0x73,
+	0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x45, 0x6c, 0x65,
+	0x63, 0x74, 0x72, 0x61, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x7d, 0x0a, 0x1a, 0x73,
 	0x69, 0x67, 0x6e, 0x65, 0x64, 0x5f, 0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x5f,
 	0x61, 0x6e, 0x64, 0x5f, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
 	0x40, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76,
@@ -3836,60 +3836,60 @@ var file_proto_prysm_v1alpha1_validator_proto_rawDesc = []byte{
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x28,
 	0x3a, 0x01, 0x2a, 0x22, 0x23, 0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68,
 	0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x74, 0x74,
-	0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0xb2, 0x01, 0x0a, 0x1d, 0x53, 0x75, 0x62,
-	0x6d, 0x69, 0x74, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x30, 0x2e, 0x65, 0x74, 0x68,
-	0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68,
-	0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x31, 0x2e, 0x65,
-	0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c,
-	0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65,
-	0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x2c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x26, 0x3a, 0x01, 0x2a, 0x22, 0x21, 0x2f, 0x65, 0x74, 0x68,
-	0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61,
-	0x74, 0x6f, 0x72, 0x2f, 0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x12, 0xbe, 0x01,
-	0x0a, 0x23, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41, 0x67,
-	0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x33, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d,
-	0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x53, 0x69,
-	0x67, 0x6e, 0x65, 0x64, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62,
-	0x6d, 0x69, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x65, 0x74, 0x68,
-	0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68,
-	0x61, 0x31, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61,
-	0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x22, 0x2c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x26, 0x3a, 0x01, 0x2a, 0x22, 0x21, 0x2f, 0x65, 0x74,
-	0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64,
-	0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x12, 0xa5,
-	0x01, 0x0a, 0x19, 0x50, 0x72, 0x6f, 0x70, 0x6f, 0x73, 0x65, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74,
-	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12, 0x29, 0x2e, 0x65,
-	0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c,
-	0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x1a, 0x25, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65,
-	0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e,
-	0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x36,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x30, 0x3a, 0x01, 0x2a, 0x22, 0x2b, 0x2f, 0x65, 0x74, 0x68, 0x2f,
-	0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
-	0x6f, 0x72, 0x2f, 0x61, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x65,
-	0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12, 0xc8, 0x01, 0x0a, 0x24, 0x53, 0x75, 0x62, 0x6d, 0x69,
-	0x74, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12,
-	0x30, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76,
-	0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74,
-	0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x38, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68,
-	0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67,
-	0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x22, 0x34, 0x82, 0xd3, 0xe4,
-	0x93, 0x02, 0x2e, 0x3a, 0x01, 0x2a, 0x22, 0x29, 0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61,
-	0x6c, 0x70, 0x68, 0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f,
-	0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x5f, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72,
-	0x61, 0x12, 0xd4, 0x01, 0x0a, 0x2a, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x53, 0x69, 0x67, 0x6e,
+	0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0xa5, 0x01, 0x0a, 0x19, 0x50, 0x72, 0x6f,
+	0x70, 0x6f, 0x73, 0x65, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x45,
+	0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12, 0x29, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75,
+	0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41,
+	0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72,
+	0x61, 0x1a, 0x25, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68,
+	0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x36, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x30,
+	0x3a, 0x01, 0x2a, 0x22, 0x2b, 0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68,
+	0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x74, 0x74,
+	0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61,
+	0x12, 0xb2, 0x01, 0x0a, 0x1d, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x41, 0x67, 0x67, 0x72, 0x65,
+	0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f,
+	0x6f, 0x66, 0x12, 0x30, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74,
+	0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65,
+	0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x31, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e,
+	0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67,
+	0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x26, 0x3a,
+	0x01, 0x2a, 0x22, 0x21, 0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61,
+	0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x67, 0x67, 0x72,
+	0x65, 0x67, 0x61, 0x74, 0x65, 0x12, 0xc8, 0x01, 0x0a, 0x24, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74,
+	0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69,
+	0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x12, 0x30,
+	0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31,
+	0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65,
+	0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x38, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e,
+	0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61,
+	0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x45, 0x6c, 0x65, 0x63, 0x74,
+	0x72, 0x61, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x34, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x2e, 0x3a, 0x01, 0x2a, 0x22, 0x29, 0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c,
+	0x70, 0x68, 0x61, 0x31, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61,
+	0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x5f, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61,
+	0x12, 0xbe, 0x01, 0x0a, 0x23, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x53, 0x69, 0x67, 0x6e, 0x65,
+	0x64, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x12, 0x33, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72,
+	0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31,
+	0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65,
+	0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e,
+	0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61,
+	0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41, 0x67, 0x67, 0x72,
+	0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x2c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x26, 0x3a, 0x01, 0x2a, 0x22, 0x21,
+	0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2f, 0x76, 0x61,
+	0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f, 0x61, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74,
+	0x65, 0x12, 0xd4, 0x01, 0x0a, 0x2a, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x53, 0x69, 0x67, 0x6e,
 	0x65, 0x64, 0x41, 0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x65, 0x6c, 0x65, 0x63,
 	0x74, 0x69, 0x6f, 0x6e, 0x50, 0x72, 0x6f, 0x6f, 0x66, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61,
 	0x12, 0x3a, 0x2e, 0x65, 0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e,
 	0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41,
-	0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x63, 0x74, 0x72, 0x61, 0x1a, 0x34, 0x2e, 0x65,
+	0x67, 0x67, 0x72, 0x65, 0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x45, 0x6c,
+	0x65, 0x63, 0x74, 0x72, 0x61, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x65,
 	0x74, 0x68, 0x65, 0x72, 0x65, 0x75, 0x6d, 0x2e, 0x65, 0x74, 0x68, 0x2e, 0x76, 0x31, 0x61, 0x6c,
 	0x70, 0x68, 0x61, 0x31, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x65, 0x64, 0x41, 0x67, 0x67, 0x72, 0x65,
 	0x67, 0x61, 0x74, 0x65, 0x53, 0x75, 0x62, 0x6d, 0x69, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
@@ -4091,9 +4091,9 @@ var file_proto_prysm_v1alpha1_validator_proto_goTypes = []interface{}{
 	(*AttestResponse)(nil),                                     // 25: ethereum.eth.v1alpha1.AttestResponse
 	(*AggregateSelectionRequest)(nil),                          // 26: ethereum.eth.v1alpha1.AggregateSelectionRequest
 	(*AggregateSelectionResponse)(nil),                         // 27: ethereum.eth.v1alpha1.AggregateSelectionResponse
-	(*AggregateSelectionResponseElectra)(nil),                  // 28: ethereum.eth.v1alpha1.AggregateSelectionResponseElectra
+	(*AggregateSelectionElectraResponse)(nil),                  // 28: ethereum.eth.v1alpha1.AggregateSelectionElectraResponse
 	(*SignedAggregateSubmitRequest)(nil),                       // 29: ethereum.eth.v1alpha1.SignedAggregateSubmitRequest
-	(*SignedAggregateSubmitRequestElectra)(nil),                // 30: ethereum.eth.v1alpha1.SignedAggregateSubmitRequestElectra
+	(*SignedAggregateSubmitElectraRequest)(nil),                // 30: ethereum.eth.v1alpha1.SignedAggregateSubmitElectraRequest
 	(*SignedAggregateSubmitResponse)(nil),                      // 31: ethereum.eth.v1alpha1.SignedAggregateSubmitResponse
 	(*CommitteeSubnetsSubscribeRequest)(nil),                   // 32: ethereum.eth.v1alpha1.CommitteeSubnetsSubscribeRequest
 	(*Validator)(nil),                                          // 33: ethereum.eth.v1alpha1.Validator
@@ -4149,9 +4149,9 @@ var file_proto_prysm_v1alpha1_validator_proto_depIdxs = []int32{
 	47, // 9: ethereum.eth.v1alpha1.DutiesResponse.next_epoch_duties:type_name -> ethereum.eth.v1alpha1.DutiesResponse.Duty
 	56, // 10: ethereum.eth.v1alpha1.BlockRequest.builder_boost_factor:type_name -> google.protobuf.UInt64Value
 	57, // 11: ethereum.eth.v1alpha1.AggregateSelectionResponse.aggregate_and_proof:type_name -> ethereum.eth.v1alpha1.AggregateAttestationAndProof
-	58, // 12: ethereum.eth.v1alpha1.AggregateSelectionResponseElectra.aggregate_and_proof:type_name -> ethereum.eth.v1alpha1.AggregateAttestationAndProofElectra
+	58, // 12: ethereum.eth.v1alpha1.AggregateSelectionElectraResponse.aggregate_and_proof:type_name -> ethereum.eth.v1alpha1.AggregateAttestationAndProofElectra
 	59, // 13: ethereum.eth.v1alpha1.SignedAggregateSubmitRequest.signed_aggregate_and_proof:type_name -> ethereum.eth.v1alpha1.SignedAggregateAttestationAndProof
-	60, // 14: ethereum.eth.v1alpha1.SignedAggregateSubmitRequestElectra.signed_aggregate_and_proof:type_name -> ethereum.eth.v1alpha1.SignedAggregateAttestationAndProofElectra
+	60, // 14: ethereum.eth.v1alpha1.SignedAggregateSubmitElectraRequest.signed_aggregate_and_proof:type_name -> ethereum.eth.v1alpha1.SignedAggregateAttestationAndProofElectra
 	0,  // 15: ethereum.eth.v1alpha1.ValidatorInfo.status:type_name -> ethereum.eth.v1alpha1.ValidatorStatus
 	48, // 16: ethereum.eth.v1alpha1.DoppelGangerRequest.validator_requests:type_name -> ethereum.eth.v1alpha1.DoppelGangerRequest.ValidatorRequest
 	49, // 17: ethereum.eth.v1alpha1.DoppelGangerResponse.responses:type_name -> ethereum.eth.v1alpha1.DoppelGangerResponse.ValidatorResponse
@@ -4173,11 +4173,11 @@ var file_proto_prysm_v1alpha1_validator_proto_depIdxs = []int32{
 	41, // 33: ethereum.eth.v1alpha1.BeaconNodeValidator.GetFeeRecipientByPubKey:input_type -> ethereum.eth.v1alpha1.FeeRecipientByPubKeyRequest
 	24, // 34: ethereum.eth.v1alpha1.BeaconNodeValidator.GetAttestationData:input_type -> ethereum.eth.v1alpha1.AttestationDataRequest
 	64, // 35: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeAttestation:input_type -> ethereum.eth.v1alpha1.Attestation
-	26, // 36: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProof:input_type -> ethereum.eth.v1alpha1.AggregateSelectionRequest
-	29, // 37: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProof:input_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitRequest
-	65, // 38: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeAttestationElectra:input_type -> ethereum.eth.v1alpha1.AttestationElectra
-	26, // 39: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProofElectra:input_type -> ethereum.eth.v1alpha1.AggregateSelectionRequest
-	30, // 40: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProofElectra:input_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitRequestElectra
+	65, // 36: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeAttestationElectra:input_type -> ethereum.eth.v1alpha1.AttestationElectra
+	26, // 37: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProof:input_type -> ethereum.eth.v1alpha1.AggregateSelectionRequest
+	26, // 38: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProofElectra:input_type -> ethereum.eth.v1alpha1.AggregateSelectionRequest
+	29, // 39: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProof:input_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitRequest
+	30, // 40: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProofElectra:input_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitElectraRequest
 	66, // 41: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeExit:input_type -> ethereum.eth.v1alpha1.SignedVoluntaryExit
 	32, // 42: ethereum.eth.v1alpha1.BeaconNodeValidator.SubscribeCommitteeSubnets:input_type -> ethereum.eth.v1alpha1.CommitteeSubnetsSubscribeRequest
 	36, // 43: ethereum.eth.v1alpha1.BeaconNodeValidator.CheckDoppelGanger:input_type -> ethereum.eth.v1alpha1.DoppelGangerRequest
@@ -4204,10 +4204,10 @@ var file_proto_prysm_v1alpha1_validator_proto_depIdxs = []int32{
 	42, // 64: ethereum.eth.v1alpha1.BeaconNodeValidator.GetFeeRecipientByPubKey:output_type -> ethereum.eth.v1alpha1.FeeRecipientByPubKeyResponse
 	70, // 65: ethereum.eth.v1alpha1.BeaconNodeValidator.GetAttestationData:output_type -> ethereum.eth.v1alpha1.AttestationData
 	25, // 66: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeAttestation:output_type -> ethereum.eth.v1alpha1.AttestResponse
-	27, // 67: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProof:output_type -> ethereum.eth.v1alpha1.AggregateSelectionResponse
-	31, // 68: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProof:output_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitResponse
-	25, // 69: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeAttestationElectra:output_type -> ethereum.eth.v1alpha1.AttestResponse
-	28, // 70: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProofElectra:output_type -> ethereum.eth.v1alpha1.AggregateSelectionResponseElectra
+	25, // 67: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeAttestationElectra:output_type -> ethereum.eth.v1alpha1.AttestResponse
+	27, // 68: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProof:output_type -> ethereum.eth.v1alpha1.AggregateSelectionResponse
+	28, // 69: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitAggregateSelectionProofElectra:output_type -> ethereum.eth.v1alpha1.AggregateSelectionElectraResponse
+	31, // 70: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProof:output_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitResponse
 	31, // 71: ethereum.eth.v1alpha1.BeaconNodeValidator.SubmitSignedAggregateSelectionProofElectra:output_type -> ethereum.eth.v1alpha1.SignedAggregateSubmitResponse
 	23, // 72: ethereum.eth.v1alpha1.BeaconNodeValidator.ProposeExit:output_type -> ethereum.eth.v1alpha1.ProposeExitResponse
 	62, // 73: ethereum.eth.v1alpha1.BeaconNodeValidator.SubscribeCommitteeSubnets:output_type -> google.protobuf.Empty
@@ -4563,7 +4563,7 @@ func file_proto_prysm_v1alpha1_validator_proto_init() {
 			}
 		}
 		file_proto_prysm_v1alpha1_validator_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AggregateSelectionResponseElectra); i {
+			switch v := v.(*AggregateSelectionElectraResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4587,7 +4587,7 @@ func file_proto_prysm_v1alpha1_validator_proto_init() {
 			}
 		}
 		file_proto_prysm_v1alpha1_validator_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SignedAggregateSubmitRequestElectra); i {
+			switch v := v.(*SignedAggregateSubmitElectraRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4893,11 +4893,11 @@ type BeaconNodeValidatorClient interface {
 	GetFeeRecipientByPubKey(ctx context.Context, in *FeeRecipientByPubKeyRequest, opts ...grpc.CallOption) (*FeeRecipientByPubKeyResponse, error)
 	GetAttestationData(ctx context.Context, in *AttestationDataRequest, opts ...grpc.CallOption) (*AttestationData, error)
 	ProposeAttestation(ctx context.Context, in *Attestation, opts ...grpc.CallOption) (*AttestResponse, error)
-	SubmitAggregateSelectionProof(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionResponse, error)
-	SubmitSignedAggregateSelectionProof(ctx context.Context, in *SignedAggregateSubmitRequest, opts ...grpc.CallOption) (*SignedAggregateSubmitResponse, error)
 	ProposeAttestationElectra(ctx context.Context, in *AttestationElectra, opts ...grpc.CallOption) (*AttestResponse, error)
-	SubmitAggregateSelectionProofElectra(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionResponseElectra, error)
-	SubmitSignedAggregateSelectionProofElectra(ctx context.Context, in *SignedAggregateSubmitRequestElectra, opts ...grpc.CallOption) (*SignedAggregateSubmitResponse, error)
+	SubmitAggregateSelectionProof(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionResponse, error)
+	SubmitAggregateSelectionProofElectra(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionElectraResponse, error)
+	SubmitSignedAggregateSelectionProof(ctx context.Context, in *SignedAggregateSubmitRequest, opts ...grpc.CallOption) (*SignedAggregateSubmitResponse, error)
+	SubmitSignedAggregateSelectionProofElectra(ctx context.Context, in *SignedAggregateSubmitElectraRequest, opts ...grpc.CallOption) (*SignedAggregateSubmitResponse, error)
 	ProposeExit(ctx context.Context, in *SignedVoluntaryExit, opts ...grpc.CallOption) (*ProposeExitResponse, error)
 	SubscribeCommitteeSubnets(ctx context.Context, in *CommitteeSubnetsSubscribeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CheckDoppelGanger(ctx context.Context, in *DoppelGangerRequest, opts ...grpc.CallOption) (*DoppelGangerResponse, error)
@@ -5087,9 +5087,27 @@ func (c *beaconNodeValidatorClient) ProposeAttestation(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *beaconNodeValidatorClient) ProposeAttestationElectra(ctx context.Context, in *AttestationElectra, opts ...grpc.CallOption) (*AttestResponse, error) {
+	out := new(AttestResponse)
+	err := c.cc.Invoke(ctx, "/ethereum.eth.v1alpha1.BeaconNodeValidator/ProposeAttestationElectra", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *beaconNodeValidatorClient) SubmitAggregateSelectionProof(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionResponse, error) {
 	out := new(AggregateSelectionResponse)
 	err := c.cc.Invoke(ctx, "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitAggregateSelectionProof", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *beaconNodeValidatorClient) SubmitAggregateSelectionProofElectra(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionElectraResponse, error) {
+	out := new(AggregateSelectionElectraResponse)
+	err := c.cc.Invoke(ctx, "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitAggregateSelectionProofElectra", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -5105,25 +5123,7 @@ func (c *beaconNodeValidatorClient) SubmitSignedAggregateSelectionProof(ctx cont
 	return out, nil
 }
 
-func (c *beaconNodeValidatorClient) ProposeAttestationElectra(ctx context.Context, in *AttestationElectra, opts ...grpc.CallOption) (*AttestResponse, error) {
-	out := new(AttestResponse)
-	err := c.cc.Invoke(ctx, "/ethereum.eth.v1alpha1.BeaconNodeValidator/ProposeAttestationElectra", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *beaconNodeValidatorClient) SubmitAggregateSelectionProofElectra(ctx context.Context, in *AggregateSelectionRequest, opts ...grpc.CallOption) (*AggregateSelectionResponseElectra, error) {
-	out := new(AggregateSelectionResponseElectra)
-	err := c.cc.Invoke(ctx, "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitAggregateSelectionProofElectra", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *beaconNodeValidatorClient) SubmitSignedAggregateSelectionProofElectra(ctx context.Context, in *SignedAggregateSubmitRequestElectra, opts ...grpc.CallOption) (*SignedAggregateSubmitResponse, error) {
+func (c *beaconNodeValidatorClient) SubmitSignedAggregateSelectionProofElectra(ctx context.Context, in *SignedAggregateSubmitElectraRequest, opts ...grpc.CallOption) (*SignedAggregateSubmitResponse, error) {
 	out := new(SignedAggregateSubmitResponse)
 	err := c.cc.Invoke(ctx, "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitSignedAggregateSelectionProofElectra", in, out, opts...)
 	if err != nil {
@@ -5313,11 +5313,11 @@ type BeaconNodeValidatorServer interface {
 	GetFeeRecipientByPubKey(context.Context, *FeeRecipientByPubKeyRequest) (*FeeRecipientByPubKeyResponse, error)
 	GetAttestationData(context.Context, *AttestationDataRequest) (*AttestationData, error)
 	ProposeAttestation(context.Context, *Attestation) (*AttestResponse, error)
-	SubmitAggregateSelectionProof(context.Context, *AggregateSelectionRequest) (*AggregateSelectionResponse, error)
-	SubmitSignedAggregateSelectionProof(context.Context, *SignedAggregateSubmitRequest) (*SignedAggregateSubmitResponse, error)
 	ProposeAttestationElectra(context.Context, *AttestationElectra) (*AttestResponse, error)
-	SubmitAggregateSelectionProofElectra(context.Context, *AggregateSelectionRequest) (*AggregateSelectionResponseElectra, error)
-	SubmitSignedAggregateSelectionProofElectra(context.Context, *SignedAggregateSubmitRequestElectra) (*SignedAggregateSubmitResponse, error)
+	SubmitAggregateSelectionProof(context.Context, *AggregateSelectionRequest) (*AggregateSelectionResponse, error)
+	SubmitAggregateSelectionProofElectra(context.Context, *AggregateSelectionRequest) (*AggregateSelectionElectraResponse, error)
+	SubmitSignedAggregateSelectionProof(context.Context, *SignedAggregateSubmitRequest) (*SignedAggregateSubmitResponse, error)
+	SubmitSignedAggregateSelectionProofElectra(context.Context, *SignedAggregateSubmitElectraRequest) (*SignedAggregateSubmitResponse, error)
 	ProposeExit(context.Context, *SignedVoluntaryExit) (*ProposeExitResponse, error)
 	SubscribeCommitteeSubnets(context.Context, *CommitteeSubnetsSubscribeRequest) (*emptypb.Empty, error)
 	CheckDoppelGanger(context.Context, *DoppelGangerRequest) (*DoppelGangerResponse, error)
@@ -5378,19 +5378,19 @@ func (*UnimplementedBeaconNodeValidatorServer) GetAttestationData(context.Contex
 func (*UnimplementedBeaconNodeValidatorServer) ProposeAttestation(context.Context, *Attestation) (*AttestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProposeAttestation not implemented")
 }
+func (*UnimplementedBeaconNodeValidatorServer) ProposeAttestationElectra(context.Context, *AttestationElectra) (*AttestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProposeAttestationElectra not implemented")
+}
 func (*UnimplementedBeaconNodeValidatorServer) SubmitAggregateSelectionProof(context.Context, *AggregateSelectionRequest) (*AggregateSelectionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitAggregateSelectionProof not implemented")
+}
+func (*UnimplementedBeaconNodeValidatorServer) SubmitAggregateSelectionProofElectra(context.Context, *AggregateSelectionRequest) (*AggregateSelectionElectraResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitAggregateSelectionProofElectra not implemented")
 }
 func (*UnimplementedBeaconNodeValidatorServer) SubmitSignedAggregateSelectionProof(context.Context, *SignedAggregateSubmitRequest) (*SignedAggregateSubmitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitSignedAggregateSelectionProof not implemented")
 }
-func (*UnimplementedBeaconNodeValidatorServer) ProposeAttestationElectra(context.Context, *AttestationElectra) (*AttestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProposeAttestationElectra not implemented")
-}
-func (*UnimplementedBeaconNodeValidatorServer) SubmitAggregateSelectionProofElectra(context.Context, *AggregateSelectionRequest) (*AggregateSelectionResponseElectra, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubmitAggregateSelectionProofElectra not implemented")
-}
-func (*UnimplementedBeaconNodeValidatorServer) SubmitSignedAggregateSelectionProofElectra(context.Context, *SignedAggregateSubmitRequestElectra) (*SignedAggregateSubmitResponse, error) {
+func (*UnimplementedBeaconNodeValidatorServer) SubmitSignedAggregateSelectionProofElectra(context.Context, *SignedAggregateSubmitElectraRequest) (*SignedAggregateSubmitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubmitSignedAggregateSelectionProofElectra not implemented")
 }
 func (*UnimplementedBeaconNodeValidatorServer) ProposeExit(context.Context, *SignedVoluntaryExit) (*ProposeExitResponse, error) {
@@ -5677,42 +5677,6 @@ func _BeaconNodeValidator_ProposeAttestation_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _BeaconNodeValidator_SubmitAggregateSelectionProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AggregateSelectionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BeaconNodeValidatorServer).SubmitAggregateSelectionProof(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitAggregateSelectionProof",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BeaconNodeValidatorServer).SubmitAggregateSelectionProof(ctx, req.(*AggregateSelectionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _BeaconNodeValidator_SubmitSignedAggregateSelectionProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SignedAggregateSubmitRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BeaconNodeValidatorServer).SubmitSignedAggregateSelectionProof(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitSignedAggregateSelectionProof",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BeaconNodeValidatorServer).SubmitSignedAggregateSelectionProof(ctx, req.(*SignedAggregateSubmitRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _BeaconNodeValidator_ProposeAttestationElectra_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AttestationElectra)
 	if err := dec(in); err != nil {
@@ -5727,6 +5691,24 @@ func _BeaconNodeValidator_ProposeAttestationElectra_Handler(srv interface{}, ctx
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(BeaconNodeValidatorServer).ProposeAttestationElectra(ctx, req.(*AttestationElectra))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BeaconNodeValidator_SubmitAggregateSelectionProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AggregateSelectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BeaconNodeValidatorServer).SubmitAggregateSelectionProof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitAggregateSelectionProof",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BeaconNodeValidatorServer).SubmitAggregateSelectionProof(ctx, req.(*AggregateSelectionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -5749,8 +5731,26 @@ func _BeaconNodeValidator_SubmitAggregateSelectionProofElectra_Handler(srv inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BeaconNodeValidator_SubmitSignedAggregateSelectionProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignedAggregateSubmitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BeaconNodeValidatorServer).SubmitSignedAggregateSelectionProof(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitSignedAggregateSelectionProof",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BeaconNodeValidatorServer).SubmitSignedAggregateSelectionProof(ctx, req.(*SignedAggregateSubmitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BeaconNodeValidator_SubmitSignedAggregateSelectionProofElectra_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SignedAggregateSubmitRequestElectra)
+	in := new(SignedAggregateSubmitElectraRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -5762,7 +5762,7 @@ func _BeaconNodeValidator_SubmitSignedAggregateSelectionProofElectra_Handler(srv
 		FullMethod: "/ethereum.eth.v1alpha1.BeaconNodeValidator/SubmitSignedAggregateSelectionProofElectra",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BeaconNodeValidatorServer).SubmitSignedAggregateSelectionProofElectra(ctx, req.(*SignedAggregateSubmitRequestElectra))
+		return srv.(BeaconNodeValidatorServer).SubmitSignedAggregateSelectionProofElectra(ctx, req.(*SignedAggregateSubmitElectraRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -6056,20 +6056,20 @@ var _BeaconNodeValidator_serviceDesc = grpc.ServiceDesc{
 			Handler:    _BeaconNodeValidator_ProposeAttestation_Handler,
 		},
 		{
-			MethodName: "SubmitAggregateSelectionProof",
-			Handler:    _BeaconNodeValidator_SubmitAggregateSelectionProof_Handler,
-		},
-		{
-			MethodName: "SubmitSignedAggregateSelectionProof",
-			Handler:    _BeaconNodeValidator_SubmitSignedAggregateSelectionProof_Handler,
-		},
-		{
 			MethodName: "ProposeAttestationElectra",
 			Handler:    _BeaconNodeValidator_ProposeAttestationElectra_Handler,
 		},
 		{
+			MethodName: "SubmitAggregateSelectionProof",
+			Handler:    _BeaconNodeValidator_SubmitAggregateSelectionProof_Handler,
+		},
+		{
 			MethodName: "SubmitAggregateSelectionProofElectra",
 			Handler:    _BeaconNodeValidator_SubmitAggregateSelectionProofElectra_Handler,
+		},
+		{
+			MethodName: "SubmitSignedAggregateSelectionProof",
+			Handler:    _BeaconNodeValidator_SubmitSignedAggregateSelectionProof_Handler,
 		},
 		{
 			MethodName: "SubmitSignedAggregateSelectionProofElectra",

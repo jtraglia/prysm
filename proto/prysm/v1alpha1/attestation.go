@@ -37,7 +37,8 @@ type SignedAggregateAttAndProof interface {
 	ssz.Marshaler
 	ssz.Unmarshaler
 	ssz.HashRoot
-	GetAggregateAttestationAndProofVal() AggregateAttestationAndProof
+	Version() int
+	GetAggregateAttestationAndProof() AggregateAttAndProof
 	GetSignature() []byte
 }
 
@@ -46,6 +47,7 @@ type AggregateAttAndProof interface {
 	ssz.Marshaler
 	ssz.Unmarshaler
 	ssz.HashRoot
+	Version() int
 	GetAggregatorIndex() primitives.ValidatorIndex
 	GetAggregateVal() Att
 	GetSelectionProof() []byte
@@ -133,18 +135,34 @@ func (a *AttesterSlashingElectra) GetSecondAttestation() IndexedAtt {
 	return a.Attestation_2
 }
 
+func (a *AggregateAttestationAndProof) Version() int {
+	return version.Phase0
+}
+
 func (a *AggregateAttestationAndProof) GetAggregateVal() Att {
 	return a.Aggregate
+}
+
+func (a *AggregateAttestationAndProofElectra) Version() int {
+	return version.Electra
 }
 
 func (a *AggregateAttestationAndProofElectra) GetAggregateVal() Att {
 	return a.Aggregate
 }
 
-func (a *SignedAggregateAttestationAndProof) GetAggregateAttestationAndProofVal() AggregateAttAndProof {
+func (a *SignedAggregateAttestationAndProof) Version() int {
+	return version.Phase0
+}
+
+func (a *SignedAggregateAttestationAndProof) GetAggregateAttestationAndProof() AggregateAttAndProof {
 	return a.Message
 }
 
-func (a *SignedAggregateAttestationAndProofElectra) GetAggregateAttestationAndProofVal() AggregateAttAndProof {
+func (a *SignedAggregateAttestationAndProofElectra) Version() int {
+	return version.Electra
+}
+
+func (a *SignedAggregateAttestationAndProofElectra) GetAggregateAttestationAndProof() AggregateAttAndProof {
 	return a.Message
 }

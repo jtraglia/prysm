@@ -524,11 +524,12 @@ func GetValidatorFromDeposit(pubKey []byte, withdrawalCredentials []byte, amount
 	validator := &ethpb.Validator{
 		PublicKey:                  pubKey,
 		WithdrawalCredentials:      withdrawalCredentials,
+		EffectiveBalance:           0,
+		Slashed:                    false,
 		ActivationEligibilityEpoch: params.BeaconConfig().FarFutureEpoch,
 		ActivationEpoch:            params.BeaconConfig().FarFutureEpoch,
 		ExitEpoch:                  params.BeaconConfig().FarFutureEpoch,
 		WithdrawableEpoch:          params.BeaconConfig().FarFutureEpoch,
-		EffectiveBalance:           0,
 	}
 	v, err := state_native.NewValidator(validator)
 	if err != nil {

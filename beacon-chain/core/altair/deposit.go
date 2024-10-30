@@ -202,10 +202,11 @@ func GetValidatorFromDeposit(pubKey []byte, withdrawalCredentials []byte, amount
 	return &ethpb.Validator{
 		PublicKey:                  pubKey,
 		WithdrawalCredentials:      withdrawalCredentials,
+		EffectiveBalance:           effectiveBalance,
+		Slashed:                    false,
 		ActivationEligibilityEpoch: params.BeaconConfig().FarFutureEpoch,
 		ActivationEpoch:            params.BeaconConfig().FarFutureEpoch,
 		ExitEpoch:                  params.BeaconConfig().FarFutureEpoch,
 		WithdrawableEpoch:          params.BeaconConfig().FarFutureEpoch,
-		EffectiveBalance:           effectiveBalance,
 	}
 }

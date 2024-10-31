@@ -33,6 +33,12 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Use ROBlock across block processing pipeline.
 - Added missing Eth-Consensus-Version headers to GetBlockAttestationsV2 and GetAttesterSlashingsV2 endpoints.
 - When instantiating new validators, explicit set `Slashed` to false and move `EffectiveBalance` to match struct definition.
+- Updated pgo profile for beacon chain with holesky data. This improves the profile guided
+  optimizations in the go compiler.
+- Use read only state when computing the active validator list.
+- Simplified `ExitedValidatorIndices`.
+- Simplified `EjectedValidatorIndices`.
+- `engine_newPayloadV4`,`engine_getPayloadV4` are changes due to new execution request serialization decisions, [PR](https://github.com/prysmaticlabs/prysm/pull/14580)
 
 ### Deprecated
 
@@ -50,6 +56,12 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Certain deb files were returning a 404 which made building new docker images without an existing
   cache impossible. This has been fixed with updates to rules_oci and bazel-lib.
 - Fixed an issue where the length check between block body KZG commitments and the existing cache from the database was incompatible.
+- Fix `--backfill-oldest-slot` handling - this flag was totally broken, the code would always backfill to the default slot [pr](https://github.com/prysmaticlabs/prysm/pull/14584)
+- Fix keymanager API should return corrected error format for malformed tokens
+- Fix keymanager API so that get keys returns an empty response instead of a 500 error when using an unsupported keystore.
+- Small log imporvement, removing some redundant or duplicate logs
+- EIP7521 - Fixes withdrawal bug by accounting for pending partial withdrawals and deducting already withdrawn amounts from the sweep balance. [PR](https://github.com/prysmaticlabs/prysm/pull/14578)
+
 
 ### Security
 

@@ -187,14 +187,15 @@ func UpgradeToElectra(beaconState state.BeaconState) (state.BeaconState, error) 
 	}
 
 	// [New in Electra:EIP7251]
-	earliestExitEpoch := time.CurrentEpoch(beaconState)
+	farFutureEpoch := params.BeaconConfig().FarFutureEpoch
+	earliestExitEpoch := farFutureEpoch
 	preActivationIndices := make([]primitives.ValidatorIndex, 0)
 	compoundWithdrawalIndices := make([]primitives.ValidatorIndex, 0)
 	if err = beaconState.ReadFromEveryValidator(func(index int, val state.ReadOnlyValidator) error {
-		if val.ExitEpoch() != params.BeaconConfig().FarFutureEpoch && val.ExitEpoch() > earliestExitEpoch {
+		if val.ExitEpoch() < earliestExitEpoch {
 			earliestExitEpoch = val.ExitEpoch()
 		}
-		if val.ActivationEpoch() == params.BeaconConfig().FarFutureEpoch {
+		if val.ActivationEpoch() == farFutureEpoch {
 			preActivationIndices = append(preActivationIndices, primitives.ValidatorIndex(index))
 		}
 		if helpers.HasCompoundingWithdrawalCredential(val) {
@@ -205,14 +206,10 @@ func UpgradeToElectra(beaconState state.BeaconState) (state.BeaconState, error) 
 		return nil, err
 	}
 
-	earliestExitEpoch++ // Increment to find the earliest possible exit epoch
-
-	// note: should be the same in prestate and post beaconState.
-	// we are deviating from the specs a bit as it calls for using the post beaconState
-	tab, err := helpers.TotalActiveBalance(beaconState)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get total active balance")
+	if earliestExitEpoch == farFutureEpoch {
+		earliestExitEpoch = time.CurrentEpoch(beaconState)
 	}
+	earliestExitEpoch++ // Increment to find the earliest possible exit epoch
 
 	s := &ethpb.BeaconStateElectra{
 		GenesisTime:           beaconState.GenesisTime(),
@@ -268,9 +265,9 @@ func UpgradeToElectra(beaconState state.BeaconState) (state.BeaconState, error) 
 
 		DepositRequestsStartIndex:     params.BeaconConfig().UnsetDepositRequestsStartIndex,
 		DepositBalanceToConsume:       0,
-		ExitBalanceToConsume:          helpers.ActivationExitChurnLimit(primitives.Gwei(tab)),
+		ExitBalanceToConsume:          0,
 		EarliestExitEpoch:             earliestExitEpoch,
-		ConsolidationBalanceToConsume: helpers.ConsolidationChurnLimit(primitives.Gwei(tab)),
+		ConsolidationBalanceToConsume: 0,
 		EarliestConsolidationEpoch:    helpers.ActivationExitEpoch(slots.ToEpoch(beaconState.Slot())),
 		PendingDeposits:               make([]*ethpb.PendingDeposit, 0),
 		PendingPartialWithdrawals:     make([]*ethpb.PendingPartialWithdrawal, 0),

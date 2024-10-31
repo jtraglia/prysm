@@ -130,40 +130,37 @@ func TestUpgradeToElectra(t *testing.T) {
 	}
 	require.DeepEqual(t, wanted, protoHeader)
 
-	nwi, err := mSt.NextWithdrawalIndex()
+	nextWithdrawalIndex, err := mSt.NextWithdrawalIndex()
 	require.NoError(t, err)
-	require.Equal(t, uint64(0), nwi)
+	require.Equal(t, uint64(0), nextWithdrawalIndex)
 
-	lwvi, err := mSt.NextWithdrawalValidatorIndex()
+	nextWithdrawalValidatorIndex, err := mSt.NextWithdrawalValidatorIndex()
 	require.NoError(t, err)
-	require.Equal(t, primitives.ValidatorIndex(0), lwvi)
+	require.Equal(t, primitives.ValidatorIndex(0), nextWithdrawalValidatorIndex)
 
 	summaries, err := mSt.HistoricalSummaries()
 	require.NoError(t, err)
 	require.Equal(t, 0, len(summaries))
 
-	startIndex, err := mSt.DepositRequestsStartIndex()
+	depositRequestsStartIndex, err := mSt.DepositRequestsStartIndex()
 	require.NoError(t, err)
-	require.Equal(t, params.BeaconConfig().UnsetDepositRequestsStartIndex, startIndex)
+	require.Equal(t, params.BeaconConfig().UnsetDepositRequestsStartIndex, depositRequestsStartIndex)
 
-	balance, err := mSt.DepositBalanceToConsume()
+	depositBalanceToConsume, err := mSt.DepositBalanceToConsume()
 	require.NoError(t, err)
-	require.Equal(t, primitives.Gwei(0), balance)
+	require.Equal(t, primitives.Gwei(0), depositBalanceToConsume)
 
-	tab, err := helpers.TotalActiveBalance(mSt)
+	exitBalanceToConsume, err := mSt.ExitBalanceToConsume()
 	require.NoError(t, err)
+	require.Equal(t, primitives.Gwei(0), exitBalanceToConsume)
 
-	ebtc, err := mSt.ExitBalanceToConsume()
+	earliestExitEpoch, err := mSt.EarliestExitEpoch()
 	require.NoError(t, err)
-	require.Equal(t, helpers.ActivationExitChurnLimit(primitives.Gwei(tab)), ebtc)
+	require.Equal(t, primitives.Epoch(1), earliestExitEpoch)
 
-	eee, err := mSt.EarliestExitEpoch()
+	consolidationBalanceToConsume, err := mSt.ConsolidationBalanceToConsume()
 	require.NoError(t, err)
-	require.Equal(t, primitives.Epoch(1), eee)
-
-	cbtc, err := mSt.ConsolidationBalanceToConsume()
-	require.NoError(t, err)
-	require.Equal(t, helpers.ConsolidationChurnLimit(primitives.Gwei(tab)), cbtc)
+	require.Equal(t, primitives.Gwei(0), consolidationBalanceToConsume)
 
 	earliestConsolidationEpoch, err := mSt.EarliestConsolidationEpoch()
 	require.NoError(t, err)
@@ -178,8 +175,8 @@ func TestUpgradeToElectra(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, uint64(0), numPendingPartialWithdrawals)
 
-	consolidations, err := mSt.PendingConsolidations()
+	pendingConsolidations, err := mSt.PendingConsolidations()
 	require.NoError(t, err)
-	require.Equal(t, 0, len(consolidations))
+	require.Equal(t, 0, len(pendingConsolidations))
 
 }

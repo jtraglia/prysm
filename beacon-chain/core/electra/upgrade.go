@@ -187,15 +187,14 @@ func UpgradeToElectra(beaconState state.BeaconState) (state.BeaconState, error) 
 	}
 
 	// [New in Electra:EIP7251]
-	farFutureEpoch := params.BeaconConfig().FarFutureEpoch
-	earliestExitEpoch := farFutureEpoch
+	earliestExitEpoch := time.CurrentEpoch(beaconState)
 	preActivationIndices := make([]primitives.ValidatorIndex, 0)
 	compoundWithdrawalIndices := make([]primitives.ValidatorIndex, 0)
 	if err = beaconState.ReadFromEveryValidator(func(index int, val state.ReadOnlyValidator) error {
-		if val.ExitEpoch() < earliestExitEpoch {
+		if val.ExitEpoch() != params.BeaconConfig().FarFutureEpoch && val.ExitEpoch() > earliestExitEpoch {
 			earliestExitEpoch = val.ExitEpoch()
 		}
-		if val.ActivationEpoch() == farFutureEpoch {
+		if val.ActivationEpoch() == params.BeaconConfig().FarFutureEpoch {
 			preActivationIndices = append(preActivationIndices, primitives.ValidatorIndex(index))
 		}
 		if helpers.HasCompoundingWithdrawalCredential(val) {
@@ -206,9 +205,6 @@ func UpgradeToElectra(beaconState state.BeaconState) (state.BeaconState, error) 
 		return nil, err
 	}
 
-	if earliestExitEpoch == farFutureEpoch {
-		earliestExitEpoch = time.CurrentEpoch(beaconState)
-	}
 	earliestExitEpoch++ // Increment to find the earliest possible exit epoch
 
 	s := &ethpb.BeaconStateElectra{

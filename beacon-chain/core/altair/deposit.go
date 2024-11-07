@@ -3,6 +3,8 @@ package altair
 import (
 	"context"
 
+	"github.com/prysmaticlabs/prysm/v5/math"
+
 	"github.com/pkg/errors"
 	"github.com/prysmaticlabs/prysm/v5/beacon-chain/core/blocks"
 	"github.com/prysmaticlabs/prysm/v5/beacon-chain/core/helpers"
@@ -182,32 +184,41 @@ func AddValidatorToRegistry(beaconState state.BeaconState, pubKey []byte, withdr
 //
 // def get_validator_from_deposit(pubkey: BLSPubkey, withdrawal_credentials: Bytes32, amount: uint64) -> Validator:
 //
-//	effective_balance = min(amount - amount % EFFECTIVE_BALANCE_INCREMENT, MAX_EFFECTIVE_BALANCE)
-//
-//	return Validator(
+//	validator = Validator(
 //	    pubkey=pubkey,
 //	    withdrawal_credentials=withdrawal_credentials,
-//	    effective_balance=effective_balance,
+//	    effective_balance=Gwei(0),
 //	    slashed=False,
 //	    activation_eligibility_epoch=FAR_FUTURE_EPOCH,
 //	    activation_epoch=FAR_FUTURE_EPOCH,
 //	    exit_epoch=FAR_FUTURE_EPOCH,
 //	    withdrawable_epoch=FAR_FUTURE_EPOCH,
 //	)
+//
+//	# [Modified in Electra:EIP7251]
+//	max_effective_balance = get_max_effective_balance(validator)
+//	validator.effective_balance = min(amount - amount % EFFECTIVE_BALANCE_INCREMENT, max_effective_balance)
+//
+//	return validator
 func GetValidatorFromDeposit(pubKey []byte, withdrawalCredentials []byte, amount uint64) *ethpb.Validator {
-	effectiveBalance := amount - (amount % params.BeaconConfig().EffectiveBalanceIncrement)
-	if params.BeaconConfig().MaxEffectiveBalance < effectiveBalance {
-		effectiveBalance = params.BeaconConfig().MaxEffectiveBalance
-	}
-
-	return &ethpb.Validator{
+	validator := &ethpb.Validator{
 		PublicKey:                  pubKey,
 		WithdrawalCredentials:      withdrawalCredentials,
-		EffectiveBalance:           effectiveBalance,
+		EffectiveBalance:           0,
 		Slashed:                    false,
 		ActivationEligibilityEpoch: params.BeaconConfig().FarFutureEpoch,
 		ActivationEpoch:            params.BeaconConfig().FarFutureEpoch,
 		ExitEpoch:                  params.BeaconConfig().FarFutureEpoch,
 		WithdrawableEpoch:          params.BeaconConfig().FarFutureEpoch,
 	}
+
+	maxEffectiveBalance := params.BeaconConfig().MinActivationBalance
+	if helpers.HasCompoundingWithdrawalCredential(validator) {
+		maxEffectiveBalance = params.BeaconConfig().MaxEffectiveBalanceElectra
+	}
+
+	effectiveBalanceIncrement := params.BeaconConfig().EffectiveBalanceIncrement
+	validator.EffectiveBalance = math.Min(amount-amount%effectiveBalanceIncrement, maxEffectiveBalance)
+
+	return validator
 }

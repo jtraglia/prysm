@@ -188,6 +188,7 @@ Updating to this release is recommended at your convenience.
 - Testing: added custom matcher for better push settings testing.
 - Registered `GetDepositSnapshot` Beacon API endpoint.
 - Fix rolling back of a block due to a context deadline.
+- Electra: base max effective balance on the validator's withdrawal credential in `get_validator_from_deposit`.
 
 ### Security
 
